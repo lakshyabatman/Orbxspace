@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { Orbis } from "@orbisclub/orbis-sdk";
-import { Channel, GroupDetails, Mention, NetworkType, Post, Profile, UserConnectionResponse } from "../models";
+import { Channel, CreateChannelRequest, GroupDetails, Mention, NetworkType, Post, Profile, UserConnectionResponse } from "../models";
 
 import {notification} from 'antd'
 
@@ -113,17 +113,17 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
     // }
     
 
-    const createChannel = async (groupId: string) => {
+    const createChannel = async (groupId: string,createChannelRequest: CreateChannelRequest) => {
         let res = await orbis.createChannel(
             groupId,
             {
               group_id: groupId,
-              pfp: "https://...",
-              name: "Orbis Community",
-              description: "Official place to discuss Orbis related stuff.",
-              type: "chat"
+              pfp: createChannelRequest.pfp,
+              name: createChannelRequest.name,
+              description: createChannelRequest.description,
+              type: createChannelRequest.type
             }
-          );
+          );  
         // console.log(res)
     }
 

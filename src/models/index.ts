@@ -110,3 +110,16 @@ export interface UserConnectionResponse {
     },
     result: string
   }
+
+
+enum ChannelType {
+    CHAT = 'chat',
+    FEED = 'feed'
+}
+
+export interface CreateChannelRequest {
+    pfp?: string,
+    name: string,
+    description:string,
+    type: ChannelType
+}
