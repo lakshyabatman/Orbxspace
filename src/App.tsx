@@ -1,17 +1,15 @@
-import React, { useEffect } from "react";
-import { Orbis } from "@orbisclub/orbis-sdk";
+import React from "react";
 import AppProvider from "./context/AppContext";
- 
+import { Button } from "antd";
+
 const App = () => {
+  return (
+    <div>
+      <AppProvider>
+        <Button type="primary">Hello World</Button>
+      </AppProvider>
+    </div>
+  );
+};
 
-    return (
-        <div>
-            <AppProvider>
-                <h1>sup</h1>
-            </AppProvider>
-           
-        </div>
-    );
-}
-
-export default App
+export default App;

@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@orbisclub/orbis-sdk": "^0.4.4-beta.41",
-    "antd": "^5.0.2",
+    "antd": "^5.0.7",
     "css-loader": "^6.7.2",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.7.0",
