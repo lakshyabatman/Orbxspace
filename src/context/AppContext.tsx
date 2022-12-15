@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { Orbis } from "@orbisclub/orbis-sdk";
-import { Channel, CreateChannelRequest, GroupDetails, Mention, NetworkType, Post, Profile, UserConnectionResponse } from "../models";
+import { AppState, Channel, CreateChannelRequest, GroupDetails, Mention, NetworkType, Post, Profile, UserConnectionResponse } from "../models";
 
 import {notification} from 'antd'
 
@@ -17,7 +17,8 @@ interface IAppContext {
     loading: boolean,
     currentPostComments: Post[],
     posts: Post[],
-    groupDetails: GroupDetails | null
+    groupDetails: GroupDetails | null,
+    appState: AppState
 }
 
 export const AppContext = createContext<IAppContext | null>(null);
@@ -59,6 +60,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
     const [currentUser, setCurrentUser] = useState<Profile | null>(null);
 
 
+    const [appState, setAppState] = useState(AppState.NO_GROUP_FOUND);
 
     const connectWallet = async (network: NetworkType) => {
         try {
@@ -374,7 +376,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
 
 
     return (
-        <AppContext.Provider value={{connectWallet, currentNetwork, currentPost, currentPostComments, posts, connectedAddress, loading, groupDetails: currentGroup}}>
+        <AppContext.Provider value={{connectWallet, currentNetwork, currentPost, currentPostComments, posts, connectedAddress, loading, groupDetails: currentGroup, appState}}>
             <>
             {contextHolder}
             {children}

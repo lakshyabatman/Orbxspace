@@ -4,6 +4,12 @@ export enum NetworkType {
     Solana = 'solana'
 }
 
+export enum AppState {
+    NO_GROUP_FOUND = 'NO_GROUP_FOUND',
+    HOME_PAGE = 'HOME_PAGE',
+    POST_PAGE = 'POST_PAGE'
+}
+
 
 export interface Profile {
     username: string,
