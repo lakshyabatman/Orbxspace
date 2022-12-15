@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useState } from "react";
 import { Orbis } from "@orbisclub/orbis-sdk";
 import { AppState, Channel, CreateChannelRequest, GroupDetails, Mention, NetworkType, Post, Profile, UserConnectionResponse } from "../models";
 
-import {notification} from 'antd'
+import {notification, Spin} from 'antd'
 
 declare global {
     interface Window { ethereum: any, phantom: any }
@@ -64,6 +64,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
 
     const connectWallet = async (network: NetworkType) => {
         try {
+            setLoading(true)
             let res: UserConnectionResponse = await orbis.connect_v2({
                 provider: network == NetworkType.Solana ?  window.phantom?.solana : window.ethereum,
                 chain: network.toString(),
@@ -72,6 +73,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
                 throw new Error(res.result)
             }
             await getProfile(res.did)
+            
             setConnectedAddress(res.details.metadata.address)      
             setConnectedAddress(network)
         }catch(err: any) {
@@ -79,12 +81,15 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
              openNotification(err.message ?? err)
 
             // error handle
+        }finally {
+            setLoading(false)
         }
     }
 
 
     const createPost = async (message: string, channel: string) => {
         try {
+            setLoading(true)
             let res = await orbis.createPost({body: message, context: channel});
             if(res.status == 200) {
                 // here fetch post and add it inside post lsit
@@ -101,6 +106,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
             console.error(err)
             openNotification(err.message ?? err)
             // error handle
+        }finally {
+            setLoading(false)
         }
     }
 
@@ -132,6 +139,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
 
     const getPost = async (id: string) => {
         try {
+            setLoading(true)
             const res = await orbis.getPost(id);
             if(res.status != 200) {
                 throw new Error(res.error)
@@ -142,11 +150,14 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
             console.error(err)
             // error handle
             openNotification(err.message ?? err)
+        }finally {
+            setLoading(false)
         }
     }
 
     const deletePost = async (id: string) => {
         try {
+            setLoading(true)
             const res = await orbis.deletePost(id);
             if(res.status !=200) {
                 throw new Error("Something went wrong while deleting Post")
@@ -156,11 +167,14 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
         }catch(err) {
             console.error(err)
             // error handle
+        }finally {
+            setLoading(false)
         }
     }
 
     const createComment = async (message: string, postId: string, parentComment: string | null, mentions: Mention[]) => {
         try {
+            setLoading(true)
             let res = await orbis.createPost({body: message, context: appContextId, master: postId, reply_to: parentComment, mentions});
             if(res.status == 200) {
                 // HERE FETCH THE COMMENT AND ADD IT INSIDE COMMENT LIST
@@ -175,11 +189,14 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
             console.error(err);
             openNotification(err.message ?? err)
             // error handle
+        }finally {
+            setLoading(false)
         }
     }
 
     const getPosts = async (channel:string): Promise<Post[]>  => {
         try {
+            setLoading(true)
             const res =  await orbis.getPosts({context: channel});
             if(res.status == 200) {
                 return res.data
@@ -188,6 +205,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
             }
         }catch(err) {
             return Promise.reject(err)
+        }finally {
+            setLoading(false)
         }
     }
 
@@ -197,12 +216,15 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
             throw new Error("There is no group!")
         }
         try {
+            setLoading(true)
             const posts = (await Promise.all(currentGroup.channels.map(channel => getPosts(channel.stream_id)))).flat()
             setPosts([...posts])
         }catch(err: any) {
             console.error(err);
             openNotification(err.message ?? err)
             // error handle
+        }finally {
+            setLoading(false)
         }
 
     }
@@ -211,6 +233,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
     
     const getComments = async (master: string)  => {
         try {
+            setLoading(true)
             const res =  await orbis.getPosts({context: appContextId, master});
             if(res.status == 200) {
                 // setup comments (posts)
@@ -224,11 +247,14 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
             
             console.error(err)
             openNotification(err.message ?? err)
+        }finally {
+            setLoading(false)
         }
     }
 
     const getGroupDetails = async () => {
         try {
+            setLoading(true)
             const res = await orbis.getGroup(appContextId);
             if(res.status!=200) {
                 throw new Error(res.error)
@@ -240,6 +266,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
         }catch(err: any) {
             console.error(err)
             openNotification(err.message ?? err)
+        }finally {
+            setLoading(false)
         }
     }
 
@@ -271,6 +299,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
 
     const getProfile = async (did: string) => {
         try {
+            setLoading(true)
             let res = await orbis.getProfile(did);
             if(res.status != 200) {
                 throw new Error(res.error)
@@ -283,12 +312,15 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
             console.error(err)
             openNotification(err.message ?? err)
             // handle error
+        }finally {
+            setLoading(false)
         }
     }
 
 
     const updateProfile = async (pfp: string, username: string, description: string) => {
         try {
+            setLoading(true)
             let res = await orbis.updateProfile({
                 pfp,
                 username,
@@ -302,12 +334,15 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
         }catch(err: any) {
             console.error(err)
             openNotification(err.message ?? err)
+        }finally {
+            setLoading(false)
         }
     }
 
 
     const moveToChannel = (channelId: string)=> {
         try {
+            setLoading(true)
             if(!currentGroup) {
                 throw new Error("Group doesn't exist")
             }
@@ -320,6 +355,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
             console.error(err)
             openNotification(err.message ?? err)
             // handle error
+        }finally {
+            setLoading(false)
         }
     }
 
@@ -353,6 +390,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
             // await getPosts()
 
         })()
+        getGroupDetails()
         
         // isConnected()
     },[])
@@ -376,12 +414,14 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
 
 
     return (
-        <AppContext.Provider value={{connectWallet, currentNetwork, currentPost, currentPostComments, posts, connectedAddress, loading, groupDetails: currentGroup, appState}}>
+        <Spin spinning={loading} tip="Loading">
+            <AppContext.Provider value={{connectWallet, currentNetwork, currentPost, currentPostComments, posts, connectedAddress, loading, groupDetails: currentGroup, appState}}>
             <>
             {contextHolder}
             {children}
             </>
-        </AppContext.Provider>
+            </AppContext.Provider>
+        </Spin>
     )
 
 }
