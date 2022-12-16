@@ -197,12 +197,14 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
         }
     }
 
-    const getPosts = async (channel:string): Promise<Post[]>  => {
+    const getPosts = async (context: string): Promise<void>  => {
         try {
             setLoading(true)
-            const res =  await orbis.getPosts({context: channel});
+            // it'll fetch posts based on channels and if no channel is opened then the posts from the group itself
+            const res =  await orbis.getPosts({context});
             if(res.status == 200) {
-                return res.data
+                // it might fetch comments or something so we can check on that, maybe aggregate comment counts on posts
+                setPosts([...res.data])
             }else {
                 throw new Error(res.error)
             }
@@ -269,7 +271,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
                 ...res.data
             })
             setAppState(AppState.HOME_PAGE);
-            
+            await getPosts(appContextId);
+
         }catch(err: any) {
             console.error(err)
             openNotification(err.message ?? err)
@@ -347,7 +350,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
     }
 
 
-    const moveToChannel = (channelId: string)=> {
+    const moveToChannel =  async (channelId: string)=> {
         try {
             setLoading(true)
             if(!currentGroup) {
@@ -358,6 +361,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
             setCurrentChannel({
                 ...ch
             })
+            await getPosts(ch.stream_id)
         }catch(err: any) {
             console.error(err)
             openNotification(err.message ?? err)
