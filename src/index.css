@@ -8,3 +8,14 @@ body, html {
     padding: 0;
     margin: 0;
 }
+
+/* All overrides for antd should be written in this file  */
+
+
+.ant-menu-item-active {
+    background: #F0F0F0 ;
+}
+
+.ant-menu-item-selected {
+    background: #F3E7F9 !important;
+}

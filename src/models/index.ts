@@ -28,7 +28,8 @@ export interface Post {
     creator_details: CreatorDetails | null,
     content: {
         body: string | null,
-        context: string | null
+        context: string | null,
+        title: string | null
     },
     context_details: {
         group_id: string | null,

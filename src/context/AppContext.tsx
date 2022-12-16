@@ -87,16 +87,19 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
     }
 
 
-    const createPost = async (message: string, channel: string) => {
+    const createPost = async (body: string, channel: string, title: string) => {
         try {
             setLoading(true)
-            let res = await orbis.createPost({body: message, context: channel});
+            let res = await orbis.createPost({body, context: channel, title});
             if(res.status == 200) {
                 // here fetch post and add it inside post lsit
-                const post = await orbis.getPost(res.doc);
-                setPosts(
-                    [...posts, post]
-                )
+                setTimeout(async () => {
+                    const post = await orbis.getPost(res.doc);
+                    setPosts(
+                        [...posts, post]
+                    )
+                }, 2000);
+            
             }else {
                 throw new Error(res.error)
             }
@@ -211,23 +214,25 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
     }
 
 
-    const getAllPostsFromChannels = async () => {
-        if(!currentGroup) {
-            throw new Error("There is no group!")
-        }
-        try {
-            setLoading(true)
-            const posts = (await Promise.all(currentGroup.channels.map(channel => getPosts(channel.stream_id)))).flat()
-            setPosts([...posts])
-        }catch(err: any) {
-            console.error(err);
-            openNotification(err.message ?? err)
-            // error handle
-        }finally {
-            setLoading(false)
-        }
+    // const getAllPostsFromChannels = async () => {
+    //     if(!currentGroup) {
+    //         throw new Error("There is no group!")
+    //     }
+    //     try {
+    //         setLoading(true)
+    //         const posts = (await Promise.all(currentGroup.channels.map(channel => getPosts(channel.stream_id)))).flat()
+    //         setPosts([...posts])
+    //     }catch(err: any) {
+    //         console.error(err);
+    //         openNotification(err.message ?? err)
+    //         // error handle
+    //     }finally {
+    //         setLoading(false)
+    //     }
 
-    }
+    // }
+
+    
 
     
     
@@ -263,6 +268,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
             setCurrentGroup({
                 ...res.data
             })
+            setAppState(AppState.HOME_PAGE);
+            
         }catch(err: any) {
             console.error(err)
             openNotification(err.message ?? err)
@@ -361,38 +368,36 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
     }
 
     useEffect(() => {
-        (async() => {
-            if(!(await isConnected())) {
-                await connectWallet(NetworkType.Ethereum)
-            }
-
-            // const p = await updateProfile(
-            //     "https://lakshyabatman.github.io/static/media/me.d2ae65f7.jpeg",
-            //     "lakshya",
-            //     "dev"
+        // (async() => {
+        //     await isConnected()
+        //     getGroupDetails()
+        //     // const p = await updateProfile(
+        //     //     "https://lakshyabatman.github.io/static/media/me.d2ae65f7.jpeg",
+        //     //     "lakshya",
+        //     //     "dev"
             
-            // )
-            // console.log(p)
+        //     // )
+        //     // console.log(p)
 
-            // const p = await getProfile("did:pkh:solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp:2z4vRZuspCy6WEBBZmTqyRv4mPnnHrvRj1wLEjVXuob8")
-            // console.log(p)
-            // await createGroup()
-            // await createChannel("kjzl6cwe1jw146bflbengus71iqrkzqhrqxfhotdjd3kzyo3hvx96p5fvo9c5ci")
+        //     // const p = await getProfile("did:pkh:solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp:2z4vRZuspCy6WEBBZmTqyRv4mPnnHrvRj1wLEjVXuob8")
+        //     // console.log(p)
+        //     // await createGroup()
+        //     // await createChannel("kjzl6cwe1jw146bflbengus71iqrkzqhrqxfhotdjd3kzyo3hvx96p5fvo9c5ci")
 
-            // await getPosts()
-            // await getGroupDetails()
+        //     // await getPosts()
+        //     // await getGroupDetails()
            
-            // console.log(currentGroup)
-            // const posts =await Promise.all(
-            //     currentGroup?.channels.map(channel => getPosts(channel.stream_id)) ?? []
-            // )
-            // console.log(posts)
-            // await getPosts()
+        //     // console.log(currentGroup)
+        //     // const posts =await Promise.all(
+        //     //     currentGroup?.channels.map(channel => getPosts(channel.stream_id)) ?? []
+        //     // )
+        //     // console.log(posts)
+        //     // await getPosts()
 
-        })()
-        getGroupDetails()
+        // })()
         
-        // isConnected()
+        isConnected()
+        getGroupDetails()
     },[])
 
 
@@ -406,7 +411,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({children}) => {
                 // currentGroup.channels.map(async channel => {
                 //     await createPost("gm", channel.stream_id)
                 // })
-                getAllPostsFromChannels()
+                // getAllPostsFromChannels()
             }
         })()
              
