@@ -42,11 +42,6 @@ const Navbar = () => {
         </Flex>
         <div>
           {context.connectedAddress ? (
-            // <Button className="text-white" disabled>
-            //   <span className="text-white">
-            //
-            //   </span>
-            // </Button>
             <UserAvatar
               connectedAddress={context.connectedAddress}
               logout={context.logout}

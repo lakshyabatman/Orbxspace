@@ -7,7 +7,7 @@ const LayoutPage: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <Flex flexDir={"column"} height={"100vh"}>
       <Navbar />
-      <Flex>
+      <Flex bgColor={"#fcf6ff"} height={"100%"} px={12}>
         <SideMenu />
         <Box mt={24}>{children}</Box>
       </Flex>
