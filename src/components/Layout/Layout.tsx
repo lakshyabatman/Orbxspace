@@ -1,20 +1,18 @@
-import React, { PropsWithChildren } from 'react'
-import Navbar from '../Navbar/Navbar'
-import SideMenu from '../SideMenu/SideMenu'
+import React, { PropsWithChildren } from "react";
+import Navbar from "../Navbar/Navbar";
+import SideMenu from "../SideMenu/SideMenu";
+import { Box, Flex } from "@chakra-ui/react";
 
-
-  
-const LayoutPage: React.FC<PropsWithChildren> = ({children}) => {
+const LayoutPage: React.FC<PropsWithChildren> = ({ children }) => {
   return (
-    <div className='h-screen flex flex-col'>
-        <Navbar/>
-        <div className="flex-grow bg-[#FCF6FF] grid grid-cols-4 ">
-            <SideMenu/>
-            <div className="col-span-3 p-3">{children}</div>
-        </div>
-    </div>
-  )
-}
+    <Flex flexDir={"column"} height={"100vh"}>
+      <Navbar />
+      <Flex>
+        <SideMenu />
+        <Box mt={24}>{children}</Box>
+      </Flex>
+    </Flex>
+  );
+};
 
-export default LayoutPage
-
+export default LayoutPage;
