@@ -2,12 +2,15 @@ import React from "react";
 import AppProvider from "./context/AppContext";
 import { Button } from "antd";
 import Application from "./components/Application";
+import { ChakraProvider } from "@chakra-ui/react";
 
 const App = () => {
   return (
     <div>
       <AppProvider>
-        <Application/>
+        <ChakraProvider>
+          <Application />
+        </ChakraProvider>
       </AppProvider>
     </div>
   );
