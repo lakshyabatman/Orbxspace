@@ -24,6 +24,7 @@ declare global {
 interface IAppContext {
   connectWallet: (network: NetworkType) => Promise<void>;
   isConnected: () => Promise<boolean>;
+  logout: () => Promise<void>;
   connectedAddress: string | null;
   currentNetwork: string | null;
   currentPost: Post | null;
@@ -95,6 +96,25 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       openNotification(err.message ?? err);
 
       // error handle
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const logout = async () => {
+    try {
+      setLoading(true);
+      let res = await orbis.logout();
+      if (res.status != 200) {
+        throw new Error(res.result);
+      }
+      setConnectedAddress(null);
+      setCurrentNetwork(null);
+      setCurrentUser(null);
+      setAppState(AppState.HOME_PAGE);
+    } catch (err: any) {
+      console.error(err);
+      openNotification(err.message ?? err);
     } finally {
       setLoading(false);
     }
@@ -429,6 +449,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         value={{
           connectWallet,
           isConnected,
+          logout,
           currentNetwork,
           currentPost,
           currentPostComments,
