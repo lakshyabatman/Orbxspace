@@ -14,7 +14,6 @@ import React from "react";
 interface UserAvatarProps {
   connectedAddress: string;
   logout: () => void;
-  connectWallet: () => void;
 }
 
 export const UserAvatar = ({ connectedAddress, logout }: UserAvatarProps) => {
