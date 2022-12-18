@@ -29,6 +29,7 @@ interface IAppContext {
   currentNetwork: string | null;
   currentPost: Post | null;
   currentChannel: Channel | null;
+  moveToChannel: (channelId: string) => Promise<void>;
   loading: boolean;
   currentPostComments: Post[];
   posts: Post[];
@@ -74,6 +75,19 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<Profile | null>(null);
 
   const [appState, setAppState] = useState(AppState.NO_GROUP_FOUND);
+
+  const isConnected = async () => {
+    let res = await orbis.isConnected();
+    if (res.status != 200) return false;
+    setConnectedAddress(res.details.metadata.address);
+    await getProfile(res.did);
+    if ((res.details.metadata.chain as String).includes("solana")) {
+      setCurrentNetwork(NetworkType.Solana);
+    } else {
+      setCurrentNetwork(NetworkType.Ethereum);
+    }
+    return true;
+  };
 
   const connectWallet = async (network: NetworkType) => {
     try {
@@ -121,6 +135,31 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
   };
 
+  const getGroupDetails = async () => {
+    try {
+      setLoading(true);
+      const res = await orbis.getGroup(appContextId);
+      if (res.status != 200) {
+        throw new Error(res.error);
+      }
+      setCurrentGroup({
+        ...res.data,
+      });
+      if (res.data.channels.length > 0) {
+        setCurrentChannel(res.data.channels[0]);
+      }
+      await getPosts(
+        res.data.channels.length > 0 ? res.data.channels[0].stream_id : ""
+      );
+      setAppState(AppState.HOME_PAGE);
+    } catch (err: any) {
+      console.error(err);
+      openNotification(err.message ?? err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const createPost = async (body: string, channel: string, title: string) => {
     try {
       setLoading(true);
@@ -144,15 +183,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       setLoading(false);
     }
   };
-
-  // const createGroup = async () => {
-  //     const res = await orbis.createGroup({
-  //         pfp: "https://lakshyabatman.github.io/static/media/me.d2ae65f7.jpeg",
-  //         name: "cool community to test rn ",
-  //         description:"sup degens"
-  //       })
-  //     console.log(res);
-  // }
 
   const createChannel = async (
     groupId: string,
@@ -239,6 +269,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       setLoading(true);
       // it'll fetch posts based on channels and if no channel is opened then the posts from the group itself
       const res = await orbis.getPosts({ context });
+      console.log(res.data, "posts");
       if (res.status == 200) {
         // it might fetch comments or something so we can check on that, maybe aggregate comment counts on posts
         setPosts([...res.data]);
@@ -251,24 +282,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       setLoading(false);
     }
   };
-
-  // const getAllPostsFromChannels = async () => {
-  //     if(!currentGroup) {
-  //         throw new Error("There is no group!")
-  //     }
-  //     try {
-  //         setLoading(true)
-  //         const posts = (await Promise.all(currentGroup.channels.map(channel => getPosts(channel.stream_id)))).flat()
-  //         setPosts([...posts])
-  //     }catch(err: any) {
-  //         console.error(err);
-  //         openNotification(err.message ?? err)
-  //         // error handle
-  //     }finally {
-  //         setLoading(false)
-  //     }
-
-  // }
 
   const getComments = async (master: string) => {
     try {
@@ -286,40 +299,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const getGroupDetails = async () => {
-    try {
-      setLoading(true);
-      const res = await orbis.getGroup(appContextId);
-      if (res.status != 200) {
-        throw new Error(res.error);
-      }
-
-      setCurrentGroup({
-        ...res.data,
-      });
-      setAppState(AppState.HOME_PAGE);
-      await getPosts(appContextId);
-    } catch (err: any) {
-      console.error(err);
-      openNotification(err.message ?? err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const isConnected = async () => {
-    let res = await orbis.isConnected();
-    if (res.status != 200) return false;
-    setConnectedAddress(res.details.metadata.address);
-    await getProfile(res.did);
-    if ((res.details.metadata.chain as String).includes("solana")) {
-      setCurrentNetwork(NetworkType.Solana);
-    } else {
-      setCurrentNetwork(NetworkType.Ethereum);
-    }
-    return true;
   };
 
   const joinGroup = async () => {
@@ -399,48 +378,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   };
 
   useEffect(() => {
-    // (async() => {
-    //     await isConnected()
-    //     getGroupDetails()
-    //     // const p = await updateProfile(
-    //     //     "https://lakshyabatman.github.io/static/media/me.d2ae65f7.jpeg",
-    //     //     "lakshya",
-    //     //     "dev"
-
-    //     // )
-    //     // console.log(p)
-
-    //     // const p = await getProfile("did:pkh:solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp:2z4vRZuspCy6WEBBZmTqyRv4mPnnHrvRj1wLEjVXuob8")
-    //     // console.log(p)
-    //     // await createGroup()
-    //     // await createChannel("kjzl6cwe1jw146bflbengus71iqrkzqhrqxfhotdjd3kzyo3hvx96p5fvo9c5ci")
-
-    //     // await getPosts()
-    //     // await getGroupDetails()
-
-    //     // console.log(currentGroup)
-    //     // const posts =await Promise.all(
-    //     //     currentGroup?.channels.map(channel => getPosts(channel.stream_id)) ?? []
-    //     // )
-    //     // console.log(posts)
-    //     // await getPosts()
-
-    // })()
-
     isConnected();
     getGroupDetails();
   }, []);
-
-  useEffect(() => {
-    (async () => {
-      if (currentGroup) {
-        console.log(currentGroup);
-        setCurrentChannel({
-          ...currentGroup.channels[0],
-        });
-      }
-    })();
-  }, [currentGroup]);
 
   return (
     <Spin spinning={loading} tip="Loading">
@@ -450,6 +390,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           isConnected,
           logout,
           currentChannel,
+          moveToChannel,
           currentNetwork,
           currentPost,
           currentPostComments,

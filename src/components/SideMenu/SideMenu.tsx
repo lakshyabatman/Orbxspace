@@ -48,6 +48,7 @@ const SideMenu = () => {
             }
             rounded={"md"}
             cursor={"pointer"}
+            onClick={() => context.moveToChannel(channel.stream_id)}
           >
             {channel.content.name}
           </Box>
