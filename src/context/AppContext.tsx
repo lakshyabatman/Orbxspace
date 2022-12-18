@@ -28,6 +28,7 @@ interface IAppContext {
   connectedAddress: string | null;
   currentNetwork: string | null;
   currentPost: Post | null;
+  currentChannel: Channel | null;
   loading: boolean;
   currentPostComments: Post[];
   posts: Post[];
@@ -450,6 +451,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           connectWallet,
           isConnected,
           logout,
+          currentChannel,
           currentNetwork,
           currentPost,
           currentPostComments,
