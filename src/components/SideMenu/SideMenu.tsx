@@ -16,11 +16,12 @@ const SideMenu = () => {
       bg={"white"}
       height={"fit-content"}
       p={4}
+      pl={8}
     >
       <Text
         fontSize={"lg"}
         fontWeight={"semibold"}
-        mb={2}
+        mb={6}
         color={"#2D083F"}
         borderBottom={"1px"}
         pb={2}
@@ -29,9 +30,27 @@ const SideMenu = () => {
       </Text>
       {context.groupDetails?.channels.map((channel) => {
         return (
-          <Text fontSize={"sm"} py={3} px={2} key={channel.stream_id}>
+          <Box
+            fontSize={"sm"}
+            py={2}
+            px={2}
+            my={2}
+            key={channel.stream_id}
+            bg={
+              currentChannel?.stream_id === channel.stream_id
+                ? "#F3E8FF"
+                : "white"
+            }
+            borderRight={
+              currentChannel?.stream_id === channel.stream_id
+                ? "6px solid #AF5CD6"
+                : "none"
+            }
+            rounded={"md"}
+            cursor={"pointer"}
+          >
             {channel.content.name}
-          </Text>
+          </Box>
         );
       })}
     </Box>
