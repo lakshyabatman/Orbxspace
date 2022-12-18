@@ -433,13 +433,11 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     (async () => {
-      // await createPost("gm", "kjzl6cwe1jw146bflbengus71iqrkzqhrqxfhotdjd3kzyo3hvx96p5fvo9c5ci")
-      // await createPost("gm from other channel", "kjzl6cwe1jw146bflbengus71iqrkzqhrqxfhotdjd3kzyo3hvx96p5fvo9c5ci")
       if (currentGroup) {
-        // currentGroup.channels.map(async channel => {
-        //     await createPost("gm", channel.stream_id)
-        // })
-        // getAllPostsFromChannels()
+        console.log(currentGroup);
+        setCurrentChannel({
+          ...currentGroup.channels[0],
+        });
       }
     })();
   }, [currentGroup]);
