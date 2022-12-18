@@ -367,7 +367,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       setCurrentChannel({
         ...ch,
       });
-      await getPosts(ch.stream_id);
+      console.log(channelId);
+      await getPosts(channelId);
     } catch (err: any) {
       console.error(err);
       openNotification(err.message ?? err);
