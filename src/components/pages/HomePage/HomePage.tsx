@@ -11,11 +11,13 @@ const HomePage = () => {
   return (
     <Box w={"full"} ml={4}>
       {context.posts.map((post) => {
+        console.log(post);
         return (
           <Post
             postContent={post.content.body ? post.content.body : ""}
             postAuthor={""}
-            postDate={""}
+            postTimestamp={post.timestamp}
+            postCommentsCount={post.count_replies.toString()}
           />
         );
       })}
