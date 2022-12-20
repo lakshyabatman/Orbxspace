@@ -1,20 +1,26 @@
-import React, { useContext } from 'react'
-import { AppContext } from '../../../context/AppContext'
+import React, { useContext } from "react";
+import { AppContext } from "../../../context/AppContext";
+import { Post } from "../../Post/Post";
+import { Box } from "@chakra-ui/react";
 
 const HomePage = () => {
-
-
   const context = useContext(AppContext);
 
-  if(context == null) return <h1>ERROR</h1>
+  if (context == null) return <h1>ERROR</h1>;
 
   return (
-    <>
-      { context.posts.map(post => {
-        return <h1>{post.content.body}</h1>
-      }) }
-    </>
-  )
-}
+    <Box w={"full"} ml={4}>
+      {context.posts.map((post) => {
+        return (
+          <Post
+            postContent={post.content.body ? post.content.body : ""}
+            postAuthor={""}
+            postDate={""}
+          />
+        );
+      })}
+    </Box>
+  );
+};
 
-export default HomePage
+export default HomePage;
