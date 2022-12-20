@@ -9,6 +9,7 @@ interface PostProps {
   postAuthor: string;
   postCommentsCount: string;
   postTimestamp: number;
+  authorPfp: string;
 }
 
 export const Post = ({
@@ -16,6 +17,7 @@ export const Post = ({
   postAuthor,
   postCommentsCount,
   postTimestamp,
+  authorPfp,
 }: PostProps) => {
   return (
     <Box w={"full"} bgColor={"white"} mb={4} rounded={"md"} px={4} pt={4}>
@@ -33,9 +35,11 @@ export const Post = ({
         borderTop={"1px solid black"}
       >
         <Flex align={"center"}>
-          <Avatar size={"sm"} mr={2} />
-          <Text fontSize={"sm"}>{postAuthor}</Text>
-          <Text fontSize={"xs"} ml={2} color={"gray.500"}>
+          <Avatar size={"sm"} mr={3} src={authorPfp ? authorPfp : ""} />
+          <Text fontSize={"sm"} mr={3}>
+            {postAuthor}
+          </Text>
+          <Text fontSize={"xs"} color={"gray.500"}>
             {unixToAgo(postTimestamp)}
           </Text>
         </Flex>

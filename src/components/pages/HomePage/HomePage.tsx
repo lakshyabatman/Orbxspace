@@ -15,7 +15,12 @@ const HomePage = () => {
         return (
           <Post
             postContent={post.content.body ? post.content.body : ""}
-            postAuthor={""}
+            postAuthor={
+              post.creator_details.profile.username
+                ? post.creator_details.profile.username
+                : "anonymous"
+            }
+            authorPfp={post.creator_details.profile.pfp}
             postTimestamp={post.timestamp}
             postCommentsCount={post.count_replies.toString()}
           />

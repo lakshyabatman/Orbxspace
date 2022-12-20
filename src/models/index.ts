@@ -24,7 +24,7 @@ export interface Post {
   timestamp: any;
   stream_id: string;
   creator: string;
-  creator_details: CreatorDetails | null;
+  creator_details: CreatorDetails;
   content: {
     body: string | null;
     context: string | null;
