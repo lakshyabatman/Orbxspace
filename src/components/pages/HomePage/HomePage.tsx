@@ -8,7 +8,6 @@ const HomePage = () => {
 
   if (context == null) return <h1>ERROR</h1>;
 
-
   return (
     <Box w={"full"} ml={4}>
       {context.posts.map((post) => {
