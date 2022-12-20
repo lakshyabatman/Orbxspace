@@ -22,6 +22,7 @@
     "css-loader": "^6.7.3",
     "framer-motion": "^7.10.2",
     "html-webpack-plugin": "^5.5.0",
+    "javascript-time-ago": "^2.5.9",
     "mini-css-extract-plugin": "^2.7.0",
     "postcss-loader": "^7.0.2",
     "react": "^18.2.0",
