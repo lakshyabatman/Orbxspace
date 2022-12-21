@@ -9,6 +9,7 @@ import {
   NetworkType,
   Post,
   Profile,
+  ReactionType,
   UserConnectionResponse,
 } from "../models";
 
@@ -35,6 +36,9 @@ interface IAppContext {
   posts: Post[];
   groupDetails: GroupDetails | null;
   appState: AppState;
+  currentUser: Profile | null,
+  reactToPost: (postId: string, reaction: ReactionType) => Promise<boolean>;
+  getPost: (id: string) => Promise<void>
 }
 
 export const AppContext = createContext<IAppContext | null>(null);
@@ -207,6 +211,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       }
       // console.log(res)
       setCurrentPost({ ...res.data });
+      setAppState(AppState.POST_PAGE)
     } catch (err: any) {
       console.error(err);
       // error handle
@@ -215,6 +220,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       setLoading(false);
     }
   };
+
 
   const deletePost = async (id: string) => {
     try {
@@ -378,6 +384,25 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
   };
 
+
+
+  const reactToPost = async (postId: string, reaction: ReactionType): Promise<boolean> => {
+    try {
+      const resp = await orbis.react(
+        postId,
+        reaction.toString()
+      )
+      if(resp.status == 200) {
+        return true;
+      }
+      return false
+    }catch(err: any) {
+      console.log(err);
+      openNotification(err.message ?? err);
+      return false
+    }
+  }
+
   useEffect(() => {
     isConnected();
     getGroupDetails();
@@ -400,6 +425,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           loading,
           groupDetails: currentGroup,
           appState,
+          currentUser,
+          reactToPost,
+          getPost
         }}
       >
         <>

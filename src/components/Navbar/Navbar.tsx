@@ -1,13 +1,18 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Avatar, Button, useDisclosure } from "@chakra-ui/react";
 import { AppContext } from "../../context/AppContext";
 import { Flex, Text } from "@chakra-ui/react";
 import { UserAvatar } from "./UserAvatar";
-import { ConnectModal } from "./ConnectModal";
+import { ConnectModal } from "./modals/ConnectModal";
 
 const Navbar = () => {
   const context = useContext(AppContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+      onClose()
+  }, [context?.currentUser])
+
   if (context == null) return <h1>ERROR</h1>;
 
   return (
@@ -41,9 +46,9 @@ const Navbar = () => {
           </Text>
         </Flex>
         <div>
-          {context.connectedAddress ? (
+          {context.currentUser?.address ? (
             <UserAvatar
-              connectedAddress={context.connectedAddress}
+              connectedAddress={context.currentUser?.address}
               logout={context.logout}
             />
           ) : (

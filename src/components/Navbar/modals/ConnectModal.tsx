@@ -8,9 +8,9 @@ import {
   Text,
   Flex,
 } from "@chakra-ui/react";
-import { AppContext } from "../../context/AppContext";
-import { NetworkType } from "../../models";
-import { useContext } from "react";
+import { AppContext } from "../../../context/AppContext";
+import { NetworkType } from "../../../models";
+import { useContext, useEffect } from "react";
 import React from "react";
 
 interface ConnectModalProps {
@@ -20,6 +20,7 @@ interface ConnectModalProps {
 
 export const ConnectModal = ({ isOpen, onClose }: ConnectModalProps) => {
   const context = useContext(AppContext);
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>

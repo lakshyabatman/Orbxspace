@@ -27,15 +27,25 @@ export const UserAvatar = ({ connectedAddress, logout }: UserAvatarProps) => {
         <PopoverCloseButton />
         <PopoverHeader>{connectedAddress.slice(0, 8) + `...`}</PopoverHeader>
         <PopoverBody textAlign={"center"}>
+
+          <div className="flex flex-col items-center">
           <Button
-            size={"sm"}
-            onClick={() => {
-              logout();
-            }}
-          >
-            {" "}
-            Log Out{" "}
-          </Button>
+              className="mb-2"
+              size={"sm"}
+              onClick={() => console.log("hu")}
+            >
+              <>Update Profile</>
+            </Button>
+            <Button
+              size={"sm"}
+              onClick={() => {
+                logout();
+              }}
+            >
+              {" "}
+              Log Out{" "}
+            </Button>
+          </div>
         </PopoverBody>
       </PopoverContent>
     </Popover>

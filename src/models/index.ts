@@ -124,3 +124,9 @@ export interface CreateChannelRequest {
   description: string;
   type: ChannelType;
 }
+
+export enum ReactionType {
+  Haha = 'haha',
+  Like = 'like',
+  Downvote = 'downvote'
+}

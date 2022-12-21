@@ -8,10 +8,10 @@ const HomePage = () => {
 
   if (context == null) return <h1>ERROR</h1>;
 
+
   return (
     <Box w={"full"} ml={4}>
       {context.posts.map((post) => {
-        console.log(post);
         return (
           <Post
             postContent={post.content.body ? post.content.body : ""}
@@ -22,7 +22,11 @@ const HomePage = () => {
             }
             authorPfp={post.creator_details.profile.pfp}
             postTimestamp={post.timestamp}
-            postCommentsCount={post.count_replies.toString()}
+            downvoteCounts={post.count_downvotes}
+            hahaCounts={post.count_haha}
+            heartCounts={post.count_likes}
+            replyCounts={post.count_replies}
+            postId={post.stream_id}
           />
         );
       })}
