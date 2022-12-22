@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { AppContext } from "../../../context/AppContext";
-import { Post } from "../../Post/Post";
+import { Post } from "../../PostPreviewCard/PostPreviewCard";
 import { Box } from "@chakra-ui/react";
 
 const HomePage = () => {
