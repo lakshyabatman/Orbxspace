@@ -14,6 +14,7 @@ import {
 } from "../models";
 
 import { notification, Spin } from "antd";
+import { useTimeout } from "@chakra-ui/react";
 
 declare global {
   interface Window {
@@ -38,7 +39,13 @@ interface IAppContext {
   appState: AppState;
   currentUser: Profile | null,
   reactToPost: (postId: string, reaction: ReactionType) => Promise<boolean>;
-  getPost: (id: string) => Promise<void>
+  getPost: (id: string) => Promise<void>,
+  createComment: (
+    message: string,
+    postId: string,
+    parentComment: string | null,
+    mentions: Mention[]
+  ) => Promise<void>
 }
 
 export const AppContext = createContext<IAppContext | null>(null);
@@ -212,6 +219,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       // console.log(res)
       setCurrentPost({ ...res.data });
       setAppState(AppState.POST_PAGE)
+      getComments(id)
     } catch (err: any) {
       console.error(err);
       // error handle
@@ -256,8 +264,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       });
       if (res.status == 200) {
         // HERE FETCH THE COMMENT AND ADD IT INSIDE COMMENT LIST
-        const comment = await orbis.getPost(res.doc);
-        setCurrentPostComments([...currentPostComments, comment]);
       } else {
         throw new Error(res.error);
       }
@@ -427,7 +433,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           appState,
           currentUser,
           reactToPost,
-          getPost
+          getPost,
+          createComment
         }}
       >
         <>

@@ -130,3 +130,5 @@ export enum ReactionType {
   Like = 'like',
   Downvote = 'downvote'
 }
+
+export type PostWithComments  = Post & {comments: PostWithComments[]}
