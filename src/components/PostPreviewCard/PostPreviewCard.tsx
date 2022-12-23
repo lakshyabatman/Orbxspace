@@ -40,14 +40,12 @@ export const Post = ({
 
   return (
     <Box w={"full"} bgColor={"white"} mb={4} rounded={"md"} px={4} pt={4}>
-      <Flex justify={"space-between"}>
-        <Text
-          w={"75%"}
-          cursor={"pointer"}
-          onClick={() => context.getPost(postId)}
-        >
-          {postContent}
-        </Text>
+      <Flex
+        justify={"space-between"}
+        cursor={"pointer"}
+        onClick={() => context.getPost(postId)}
+      >
+        <Text w={"75%"}>{postContent}</Text>
         <Flex align={"center"}>
           <ChatIcon mr={2} />
           <Text>{replyCounts} Replies</Text>
