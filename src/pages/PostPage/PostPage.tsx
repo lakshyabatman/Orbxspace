@@ -1,9 +1,9 @@
 import { Box, FormControl, Input, Textarea } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "../../../context/AppContext";
+import { AppContext } from "../../context/AppContext";
 
-import { PostWithComments, ReactionType } from "../../../models";
-import PostDetailCard from "../../PostDetailCard/PostDetailCard";
+import { PostWithComments, ReactionType } from "../../models";
+import PostDetailCard from "../../components/PostDetailCard/PostDetailCard";
 
 const PostPage = () => {
   const context = useContext(AppContext);

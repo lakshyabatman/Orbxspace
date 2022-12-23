@@ -2,8 +2,8 @@ import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { AppState } from "../models";
 import React from "react";
-import HomePage from "./pages/HomePage/HomePage";
-import PostPage from "./pages/PostPage/PostPage";
+import HomePage from "../pages/HomePage/HomePage";
+import PostPage from "../pages/PostPage/PostPage";
 import LayoutPage from "./Layout/Layout";
 
 const Application = () => {
