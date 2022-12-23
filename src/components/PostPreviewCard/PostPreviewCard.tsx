@@ -28,25 +28,26 @@ export const Post = ({
   hahaCounts,
   replyCounts,
   downvoteCounts,
-  postId
+  postId,
 }: PostProps) => {
-
-
   const context = useContext(AppContext);
 
- 
   if (context == null) return <h1>ERROR</h1>;
 
-
-  const reactToPost = async (reaction: ReactionType) : Promise<boolean> => {
+  const reactToPost = async (reaction: ReactionType): Promise<boolean> => {
     return await context.reactToPost(postId, reaction);
-
-  }
+  };
 
   return (
-    <Box w={"full"} className="cursor-pointer" bgColor={"white"} mb={4} rounded={"md"} px={4} pt={4} onClick={() => context.getPost(postId)}>
+    <Box w={"full"} bgColor={"white"} mb={4} rounded={"md"} px={4} pt={4}>
       <Flex justify={"space-between"}>
-        <Text w={"75%"}>{postContent}</Text>
+        <Text
+          w={"75%"}
+          cursor={"pointer"}
+          onClick={() => context.getPost(postId)}
+        >
+          {postContent}
+        </Text>
         <Flex align={"center"}>
           <ChatIcon mr={2} />
           <Text>{replyCounts} Replies</Text>
@@ -68,7 +69,12 @@ export const Post = ({
               {unixToAgo(postTimestamp)}
             </Text>
           </div>
-          <ReactionSection downvoteCounts={downvoteCounts} hahaCounts={hahaCounts} heartCounts={heartCounts} react={reactToPost} />
+          <ReactionSection
+            downvoteCounts={downvoteCounts}
+            hahaCounts={hahaCounts}
+            heartCounts={heartCounts}
+            react={reactToPost}
+          />
         </Flex>
       </Flex>
     </Box>
