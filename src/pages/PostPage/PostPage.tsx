@@ -4,6 +4,7 @@ import { AppContext } from "../../context/AppContext";
 
 import { PostWithComments, ReactionType } from "../../models";
 import PostDetailCard from "../../components/PostDetailCard/PostDetailCard";
+import { CommentsView } from "../../components/CommentsView/CommentsView";
 
 const PostPage = () => {
   const context = useContext(AppContext);
@@ -67,6 +68,7 @@ const PostPage = () => {
         </Box>
         {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
       </FormControl>
+      <CommentsView />
     </Box>
   );
 };

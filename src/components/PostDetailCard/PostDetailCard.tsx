@@ -1,5 +1,5 @@
-import { ChatIcon } from "@chakra-ui/icons";
-import { Avatar, Flex } from "@chakra-ui/react";
+import { ArrowBackIcon, ChatIcon } from "@chakra-ui/icons";
+import { Avatar, Flex, IconButton } from "@chakra-ui/react";
 import React from "react";
 import { Post, ReactionType } from "../../models";
 import { unixToAgo } from "../../utilities/unixToAgo";
