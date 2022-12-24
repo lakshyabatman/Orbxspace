@@ -19,7 +19,7 @@ interface PostProps {
   postId: string;
 }
 
-export const Post = ({
+const PostPreviewCard = ({
   postContent,
   postAuthor,
   postTimestamp,
@@ -78,3 +78,6 @@ export const Post = ({
     </Box>
   );
 };
+
+
+export default PostPreviewCard;

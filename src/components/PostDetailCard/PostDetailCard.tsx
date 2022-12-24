@@ -20,10 +20,10 @@ const PostDetailCard: React.FC<PostDetailCardProps> = ({
         <Avatar
           size={"sm"}
           mr={3}
-          src={currentPost.creator_details.profile.pfp}
+          src={currentPost.creator_details.profile?.pfp ?? ""}
         />
         <span className="mr-3 text-md">
-          {currentPost.creator_details.profile.username}
+          {currentPost.creator_details.profile?.username ?? ""}
         </span>
         <span className="text-gray-500 text-md">
           {unixToAgo(currentPost.timestamp)}

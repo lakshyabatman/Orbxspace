@@ -16,7 +16,12 @@ export interface Profile {
 
 export interface CreatorDetails {
   did: string;
-  profile: Profile;
+  profile: Profile | null;
+  metadata: {
+    address: string;
+    chain: string;
+    ensName: string | null;
+  }
 }
 // "kjzl6cwe1jw149q0dz6sfqmw6scb9qvtc7bqpceqz7t0g6m2o7nfdoc33zpm0y9"
 

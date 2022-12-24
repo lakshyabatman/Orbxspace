@@ -5,9 +5,9 @@ import { Box, Flex } from "@chakra-ui/react";
 
 const LayoutPage: React.FC<PropsWithChildren> = ({ children }) => {
   return (
-    <Flex flexDir={"column"} height={"100vh"}>
+    <Flex flexDir={"column"} className="min-h-screen">
       <Navbar />
-      <Flex bgColor={"#fcf6ff"} height={"100%"} px={12}>
+      <Flex bgColor={"#fcf6ff"} className="min-h-screen" px={12}>
         <SideMenu />
         <Box mt={24} w={"full"}>
           {children}

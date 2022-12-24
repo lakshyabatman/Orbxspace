@@ -8,7 +8,6 @@ import { CommentsView } from "../../components/CommentsView/CommentsView";
 
 const PostPage = () => {
   const context = useContext(AppContext);
-  const [comments, setComments] = useState<PostWithComments[]>([]);
   const [comment, setComment] = useState("");
 
   if (context == null) return <h1>ERROR</h1>;
@@ -19,29 +18,6 @@ const PostPage = () => {
     return await context.reactToPost(currentPost.stream_id, reaction);
   };
 
-  useEffect(() => {
-    const nestedComments: Record<string, PostWithComments> = {};
-    const isComment: Record<string, boolean> = {};
-
-    currentPostComments.forEach((comment) => {
-      if (comment.reply_to && nestedComments[comment.reply_to]) {
-        nestedComments[comment.reply_to].comments.push({
-          ...comment,
-          comments: [],
-        });
-        nestedComments[comment.stream_id] = { ...comment, comments: [] };
-        isComment[comment.stream_id] = false;
-      } else {
-        nestedComments[comment.stream_id] = { ...comment, comments: [] };
-        isComment[comment.stream_id] = true;
-      }
-    });
-
-    const onlyMasterComments = Object.keys(nestedComments)
-      .filter((comment) => isComment[comment])
-      .map((commentKey) => nestedComments[commentKey]);
-    setComments(onlyMasterComments);
-  }, [currentPostComments]);
 
   const addComment = async (event: any) => {
     if (event.keyCode == 13) {
@@ -68,9 +44,36 @@ const PostPage = () => {
         </Box>
         {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
       </FormControl>
-      <CommentsView />
+      <CommentsView comments={currentPostComments}/>
     </Box>
   );
 };
 
 export default PostPage;
+
+
+
+// const nestedComments: Record<string, PostWithComments> = {};
+// const isComment: Record<string, boolean> = {};
+
+// currentPostComments.forEach((comment) => {
+//   if (comment.reply_to && nestedComments[comment.reply_to]) {
+//     nestedComments[comment.reply_to].comments.push({
+//       ...comment,
+//       comments: [],
+//     });
+//     nestedComments[comment.stream_id] = { ...comment, comments: [] };
+//     isComment[comment.stream_id] = false;
+//   } else {
+//     nestedComments[comment.stream_id] = { ...comment, comments: [] };
+//     isComment[comment.stream_id] = true;
+//   }
+  
+// });
+
+// console.log()
+
+// const onlyMasterComments = Object.keys(nestedComments)
+//   .filter((comment) => isComment[comment])
+//   .map((commentKey) => nestedComments[commentKey]);
+// setComments(onlyMasterComments);

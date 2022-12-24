@@ -45,7 +45,8 @@ interface IAppContext {
     postId: string,
     parentComment: string | null,
     mentions: Mention[]
-  ) => Promise<void>
+  ) => Promise<void>,
+  getReplies: (replyTo: string) => Promise<any>
 }
 
 export const AppContext = createContext<IAppContext | null>(null);
@@ -313,6 +314,21 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
   };
 
+  const getReplies = async (replyTo: string) => {
+    try {
+      const res = await orbis.getPosts({ master: replyTo });
+      if (res.status == 200) {
+        // setup comments (posts)
+        return res.data
+      } else {
+        throw new Error(res.error);
+      }
+    } catch (err: any) {
+      console.error(err);
+      openNotification(err.message ?? err);
+    } 
+  }
+
   const joinGroup = async () => {
     try {
       await orbis.setGroupMember(appContextId, true);
@@ -434,7 +450,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           currentUser,
           reactToPost,
           getPost,
-          createComment
+          createComment,
+          getReplies
         }}
       >
         <>
