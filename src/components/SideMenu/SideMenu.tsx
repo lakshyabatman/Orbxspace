@@ -81,7 +81,7 @@ const SideMenu = () => {
           _focus={{ bgColor: "transparent" }}
           onClick={() => console.log("Create Channel")}
         >
-          Create Channel
+          Create a Post
         </Button>
       </Box>
     </Flex>
