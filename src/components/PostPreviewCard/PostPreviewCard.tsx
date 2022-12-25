@@ -39,7 +39,15 @@ const PostPreviewCard = ({
   };
 
   return (
-    <Box w={"full"} bgColor={"white"} mb={4} rounded={"md"} px={4} pt={4}>
+    <Box
+      w={"full"}
+      bgColor={"white"}
+      mb={4}
+      rounded={"md"}
+      px={4}
+      pt={4}
+      boxShadow={"0px 0px 20px 1px rgba(175, 92, 214, 0.25)"}
+    >
       <Flex
         justify={"space-between"}
         cursor={"pointer"}
@@ -78,6 +86,5 @@ const PostPreviewCard = ({
     </Box>
   );
 };
-
 
 export default PostPreviewCard;
