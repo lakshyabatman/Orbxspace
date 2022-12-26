@@ -4,6 +4,7 @@ import { Box, Button, Flex, IconButton, Text } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { useDisclosure } from "@chakra-ui/react";
 import { CreatePostModal } from "../CreatePostModal/CreatePostModal";
+import { CreateChannelModal } from "../CreateChannelModal/CreateChannelModal";
 
 const SideMenu = () => {
   const context = useContext(AppContext);
@@ -16,12 +17,23 @@ const SideMenu = () => {
     onClose: onCreatePostModalClose,
   } = useDisclosure();
 
+  const {
+    isOpen: isCreateChannelModalOpen,
+    onOpen: onCreateChannelModalOpen,
+    onClose: onCreateChannelModalClose,
+  } = useDisclosure();
+
   return (
     <>
       <CreatePostModal
         isOpen={isCreatePostModalOpen}
         onClose={onCreatePostModalClose}
         onOpen={onCreatePostModalOpen}
+      />
+      <CreateChannelModal
+        isOpen={isCreateChannelModalOpen}
+        onClose={onCreateChannelModalClose}
+        onOpen={onCreateChannelModalOpen}
       />
       <Flex flexDir={"column"}>
         <Box
@@ -70,6 +82,21 @@ const SideMenu = () => {
               </Box>
             );
           })}
+          <Button
+            leftIcon={<AddIcon />}
+            aria-label="Create Channel"
+            bgColor={"transparent"}
+            color={"#2D083F"}
+            fontWeight={"semibold"}
+            fontSize={"sm"}
+            _hover={{ bgColor: "transparent" }}
+            _active={{ bgColor: "transparent" }}
+            _focus={{ bgColor: "transparent" }}
+            px={2}
+            onClick={() => onCreateChannelModalOpen()}
+          >
+            Create a Channel
+          </Button>
         </Box>
         <Box
           mt={8}
