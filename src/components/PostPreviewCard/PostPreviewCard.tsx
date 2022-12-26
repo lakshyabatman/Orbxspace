@@ -43,8 +43,9 @@ const PostPreviewCard = ({
   return (
     <Box
       w={"full"}
+      maxW={"900px"}
       bgColor={"white"}
-      mb={4}
+      mb={"32px"}
       rounded={"md"}
       px={4}
       pt={4}
