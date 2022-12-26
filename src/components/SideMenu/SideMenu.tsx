@@ -5,11 +5,13 @@ import { AddIcon } from "@chakra-ui/icons";
 import { useDisclosure } from "@chakra-ui/react";
 import { CreatePostModal } from "../CreatePostModal/CreatePostModal";
 import { CreateChannelModal } from "../CreateChannelModal/CreateChannelModal";
+import { ChannelType } from "../../models";
 
 const SideMenu = () => {
   const context = useContext(AppContext);
   if (context == null) return <h1>ERROR</h1>;
   const currentChannel = context.currentChannel;
+
 
   const {
     isOpen: isCreatePostModalOpen,
@@ -23,14 +25,34 @@ const SideMenu = () => {
     onClose: onCreateChannelModalClose,
   } = useDisclosure();
 
+
+
+  const createChannel = async (channelName: string, channelType: ChannelType) => {
+    context.createChannel({
+      name: channelName,
+      type: channelType,
+      description: "",
+      pfp: ""
+    })
+    onCreateChannelModalClose()
+  }
+
+
+  const isAdmin = context.groupDetails?.creator == context.currentUser?.did;
+
+  const isAllowedToPost = isAdmin || (context.currentChannel?.content.type == ChannelType.CHAT && !!context.currentUser)
+
+
   return (
     <>
       <CreatePostModal
+      
         isOpen={isCreatePostModalOpen}
         onClose={onCreatePostModalClose}
         onOpen={onCreatePostModalOpen}
       />
       <CreateChannelModal
+      onSubmit={createChannel}
         isOpen={isCreateChannelModalOpen}
         onClose={onCreateChannelModalClose}
         onOpen={onCreateChannelModalOpen}
@@ -82,7 +104,7 @@ const SideMenu = () => {
               </Box>
             );
           })}
-          <Button
+          {isAdmin && (<Button
             leftIcon={<AddIcon />}
             aria-label="Create Channel"
             bgColor={"transparent"}
@@ -96,9 +118,9 @@ const SideMenu = () => {
             onClick={() => onCreateChannelModalOpen()}
           >
             Create a Channel
-          </Button>
+          </Button>)}
         </Box>
-        <Box
+        {isAllowedToPost && (<Box
           mt={8}
           rounded={"xl"}
           w={"72"}
@@ -123,7 +145,7 @@ const SideMenu = () => {
           >
             Create a Post
           </Button>
-        </Box>
+        </Box>)}
       </Flex>
     </>
   );

@@ -16,21 +16,28 @@ import {
   MenuItem,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import { ChannelType } from "../../models";
 
-export const CreateChannelModal = ({
-  isOpen,
-  onOpen,
-  onClose,
-}: {
+export interface CreateChannelModalProps {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
-}) => {
+  onSubmit : (channelName: string, channelType: ChannelType) => Promise<void>;
+}
+export const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
+  isOpen,
+  onOpen,
+  onClose,
+  onSubmit
+} ) => {
   const [channelName, setChannelName] = useState("");
-  const [channelType, setChannelType] = useState("Chat");
+  const [channelType, setChannelType] = useState<ChannelType>(ChannelType.CHAT);
+
+  const [loading, setLoading] = useState(false);
+
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered size={"xl"}>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered size={"xl"} >
       <ModalOverlay backdropFilter="blur(10px)" />
       <ModalContent>
         <ModalBody py={8}>
@@ -67,14 +74,14 @@ export const CreateChannelModal = ({
               <MenuList>
                 <MenuItem
                   onClick={() => {
-                    setChannelType("Chat");
+                    setChannelType(ChannelType.CHAT);
                   }}
                 >
                   Chat
                 </MenuItem>
                 <MenuItem
                   onClick={() => {
-                    setChannelType("Feed");
+                    setChannelType(ChannelType.FEED);
                   }}
                 >
                   Feed
@@ -84,6 +91,7 @@ export const CreateChannelModal = ({
           </Flex>
 
           <Button
+            isLoading={loading}
             display={"block"}
             mx={"auto"}
             bg={
@@ -99,9 +107,15 @@ export const CreateChannelModal = ({
             _active={{
               bg: "linear-gradient(90deg, rgba(239, 136, 210, 1), rgba(175, 92, 214, 1))",
             }}
-            onClick={() => {
-              console.log("name", channelName);
-              console.log("type", channelName);
+            onClick={async () => {
+                try {
+                  setLoading(true)
+                  await onSubmit(channelName, channelType);
+                }catch(err) {
+
+                }finally {
+                  setLoading(false)
+                }
             }}
           >
             Create Channel

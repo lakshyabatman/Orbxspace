@@ -3,6 +3,7 @@ import { Orbis } from "@orbisclub/orbis-sdk";
 import {
   AppState,
   Channel,
+  ChannelType,
   CreateChannelRequest,
   GroupDetails,
   Mention,
@@ -46,7 +47,10 @@ interface IAppContext {
     parentComment: string | null,
     mentions: Mention[]
   ) => Promise<void>,
-  getReplies: (replyTo: string) => Promise<any>
+  getReplies: (replyTo: string) => Promise<any>,
+  createChannel:  (
+    createChannelRequest: CreateChannelRequest
+  ) => Promise<void>
 }
 
 export const AppContext = createContext<IAppContext | null>(null);
@@ -197,16 +201,25 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   };
 
   const createChannel = async (
-    groupId: string,
     createChannelRequest: CreateChannelRequest
   ) => {
-    let res = await orbis.createChannel(groupId, {
-      group_id: groupId,
-      pfp: createChannelRequest.pfp,
-      name: createChannelRequest.name,
-      description: createChannelRequest.description,
-      type: createChannelRequest.type,
-    });
+      try {
+        setLoading(true)
+        const res = await orbis.createChannel(appContextId, {
+          group_id: appContextId,
+          pfp: createChannelRequest.pfp,
+          name: createChannelRequest.name,
+          description: createChannelRequest.description,
+          type: createChannelRequest.type,
+        })
+        if(res.status != 200) {
+          throw new Error(res.error);
+        }
+      }catch(err: any) {
+        openNotification(err.message ?? err);
+      }finally {
+        setLoading(false)
+      }
     // console.log(res)
   };
 
@@ -395,8 +408,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       setCurrentChannel({
         ...ch,
       });
-      console.log(channelId);
       await getPosts(channelId);
+      setAppState(AppState.HOME_PAGE)
     } catch (err: any) {
       console.error(err);
       openNotification(err.message ?? err);
@@ -431,7 +444,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   }, []);
 
   return (
-    <Spin spinning={loading} tip="Loading">
+    <Spin spinning={loading} tip="Loading" style={{zIndex:"1000"}}>
       <AppContext.Provider
         value={{
           connectWallet,
@@ -451,7 +464,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           reactToPost,
           getPost,
           createComment,
-          getReplies
+          getReplies,
+          createChannel
         }}
       >
         <>

@@ -118,7 +118,7 @@ export interface UserConnectionResponse {
   result: string;
 }
 
-enum ChannelType {
+export enum ChannelType {
   CHAT = "chat",
   FEED = "feed",
 }
