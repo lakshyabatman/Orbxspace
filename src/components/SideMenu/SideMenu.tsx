@@ -12,7 +12,6 @@ const SideMenu = () => {
   if (context == null) return <h1>ERROR</h1>;
   const currentChannel = context.currentChannel;
 
-
   const {
     isOpen: isCreatePostModalOpen,
     onOpen: onCreatePostModalOpen,
@@ -25,30 +24,31 @@ const SideMenu = () => {
     onClose: onCreateChannelModalClose,
   } = useDisclosure();
 
-
-
-  const createChannel = async (channelName: string, channelType: ChannelType) => {
+  const createChannel = async (
+    channelName: string,
+    channelType: ChannelType
+  ) => {
     context.createChannel({
       name: channelName,
       type: channelType,
       description: "",
-      pfp: ""
-    })
-    onCreateChannelModalClose()
-  }
-
+      pfp: "",
+    });
+    onCreateChannelModalClose();
+  };
 
   const createPost = async (title: string, content: string) => {
-    if(!currentChannel) return;
-    context.createPost(content,currentChannel.stream_id, title);
-    onCreatePostModalClose()
-  }
-
+    if (!currentChannel) return;
+    context.createPost(content, currentChannel.stream_id, title);
+    onCreatePostModalClose();
+  };
 
   const isAdmin = context.groupDetails?.creator == context.currentUser?.did;
 
-  const isAllowedToPost = isAdmin || (context.currentChannel?.content.type == ChannelType.CHAT && !!context.currentUser)
-
+  const isAllowedToPost =
+    isAdmin ||
+    (context.currentChannel?.content.type == ChannelType.CHAT &&
+      !!context.currentUser);
 
   return (
     <>
@@ -59,14 +59,14 @@ const SideMenu = () => {
         onOpen={onCreatePostModalOpen}
       />
       <CreateChannelModal
-      onSubmit={createChannel}
+        onSubmit={createChannel}
         isOpen={isCreateChannelModalOpen}
         onClose={onCreateChannelModalClose}
         onOpen={onCreateChannelModalOpen}
       />
       <Flex flexDir={"column"}>
         <Box
-          mt={24}
+          mt={28}
           rounded={"xl"}
           w={"72"}
           bg={"white"}
@@ -111,48 +111,52 @@ const SideMenu = () => {
               </Box>
             );
           })}
-          {isAdmin && (<Button
-            leftIcon={<AddIcon />}
-            aria-label="Create Channel"
-            bgColor={"transparent"}
-            color={"#2D083F"}
-            fontWeight={"semibold"}
-            fontSize={"sm"}
-            _hover={{ bgColor: "transparent" }}
-            _active={{ bgColor: "transparent" }}
-            _focus={{ bgColor: "transparent" }}
-            px={2}
-            onClick={() => onCreateChannelModalOpen()}
-          >
-            Create a Channel
-          </Button>)}
+          {isAdmin && (
+            <Button
+              leftIcon={<AddIcon />}
+              aria-label="Create Channel"
+              bgColor={"transparent"}
+              color={"#2D083F"}
+              fontWeight={"semibold"}
+              fontSize={"sm"}
+              _hover={{ bgColor: "transparent" }}
+              _active={{ bgColor: "transparent" }}
+              _focus={{ bgColor: "transparent" }}
+              px={2}
+              onClick={() => onCreateChannelModalOpen()}
+            >
+              Create a Channel
+            </Button>
+          )}
         </Box>
-        {isAllowedToPost && (<Box
-          mt={8}
-          rounded={"xl"}
-          w={"72"}
-          bg={"white"}
-          height={"fit-content"}
-          px={4}
-          py={1}
-          pl={8}
-          boxShadow={"0px 0px 20px 1px rgba(175, 92, 214, 0.25)"}
-        >
-          <Button
-            leftIcon={<AddIcon />}
-            aria-label="Create Post"
-            bgColor={"transparent"}
-            color={"#2D083F"}
-            fontWeight={"semibold"}
-            fontSize={"sm"}
-            _hover={{ bgColor: "transparent" }}
-            _active={{ bgColor: "transparent" }}
-            _focus={{ bgColor: "transparent" }}
-            onClick={() => onCreatePostModalOpen()}
+        {isAllowedToPost && (
+          <Box
+            mt={8}
+            rounded={"xl"}
+            w={"72"}
+            bg={"white"}
+            height={"fit-content"}
+            px={4}
+            py={1}
+            pl={8}
+            boxShadow={"0px 0px 20px 1px rgba(175, 92, 214, 0.25)"}
           >
-            Create a Post
-          </Button>
-        </Box>)}
+            <Button
+              leftIcon={<AddIcon />}
+              aria-label="Create Post"
+              bgColor={"transparent"}
+              color={"#2D083F"}
+              fontWeight={"semibold"}
+              fontSize={"sm"}
+              _hover={{ bgColor: "transparent" }}
+              _active={{ bgColor: "transparent" }}
+              _focus={{ bgColor: "transparent" }}
+              onClick={() => onCreatePostModalOpen()}
+            >
+              Create a Post
+            </Button>
+          </Box>
+        )}
       </Flex>
     </>
   );

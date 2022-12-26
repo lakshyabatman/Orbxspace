@@ -9,7 +9,7 @@ const LayoutPage: React.FC<PropsWithChildren> = ({ children }) => {
       <Navbar />
       <Flex bgColor={"#fcf6ff"} className="min-h-screen" px={12}>
         <SideMenu />
-        <Box mt={24} w={"full"}>
+        <Box mt={28} w={"full"}>
           {children}
         </Box>
       </Flex>

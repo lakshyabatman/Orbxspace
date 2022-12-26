@@ -9,7 +9,7 @@ const HomePage = () => {
   if (context == null) return <h1>ERROR</h1>;
 
   return (
-    <Box w={"full"} ml={4}>
+    <Box w={"full"} ml={"20px"}>
       {context.posts.map((post) => {
         return (
           <PostPreviewCard
