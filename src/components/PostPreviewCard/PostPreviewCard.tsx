@@ -8,6 +8,7 @@ import { AppContext } from "../../context/AppContext";
 import ReactionSection from "../ReactionSection/ReactionSection";
 
 interface PostProps {
+  postTitle: string;
   postContent: string;
   postAuthor: string;
   postTimestamp: number;
@@ -20,6 +21,7 @@ interface PostProps {
 }
 
 const PostPreviewCard = ({
+  postTitle,
   postContent,
   postAuthor,
   postTimestamp,
@@ -53,7 +55,12 @@ const PostPreviewCard = ({
         cursor={"pointer"}
         onClick={() => context.getPost(postId)}
       >
-        <Text w={"75%"}>{postContent}</Text>
+        <Box w={"75%"}>
+          <Text fontWeight={"semibold"} mb={1}>
+            {postTitle}
+          </Text>
+          <Text>{postContent}</Text>
+        </Box>
         <Flex align={"center"}>
           <ChatIcon mr={2} />
           <Text>{replyCounts} Replies</Text>
