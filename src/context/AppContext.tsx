@@ -38,20 +38,19 @@ interface IAppContext {
   posts: Post[];
   groupDetails: GroupDetails | null;
   appState: AppState;
-  currentUser: Profile | null,
+  currentUser: Profile | null;
   reactToPost: (postId: string, reaction: ReactionType) => Promise<boolean>;
-  getPost: (id: string) => Promise<void>,
+  getPost: (id: string) => Promise<void>;
   createComment: (
     message: string,
     postId: string,
     parentComment: string | null,
     mentions: Mention[]
-  ) => Promise<void>,
-  getReplies: (replyTo: string) => Promise<any>,
-  createChannel:  (
-    createChannelRequest: CreateChannelRequest
-  ) => Promise<void>,
-  createPost: (body: string, channel: string, title: string) => Promise<void>
+  ) => Promise<void>;
+  getReplies: (replyTo: string) => Promise<any>;
+  createChannel: (createChannelRequest: CreateChannelRequest) => Promise<void>;
+  createPost: (body: string, channel: string, title: string) => Promise<void>;
+  setAppState: (appState: AppState) => void;
 }
 
 export const AppContext = createContext<IAppContext | null>(null);
@@ -182,7 +181,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       setLoading(true);
       let res = await orbis.createPost({ body, context: channel, title });
       if (res.status == 200) {
-        api.info({message: "Post created successfully, will be updated on page soon"})
+        api.info({
+          message: "Post created successfully, will be updated on page soon",
+        });
       } else {
         throw new Error(res.error);
       }
@@ -197,26 +198,24 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
   };
 
-  const createChannel = async (
-    createChannelRequest: CreateChannelRequest
-  ) => {
-      try {
-        setLoading(true)
-        const res = await orbis.createChannel(appContextId, {
-          group_id: appContextId,
-          pfp: createChannelRequest.pfp,
-          name: createChannelRequest.name,
-          description: createChannelRequest.description,
-          type: createChannelRequest.type,
-        })
-        if(res.status != 200) {
-          throw new Error(res.error);
-        }
-      }catch(err: any) {
-        openNotification(err.message ?? err);
-      }finally {
-        setLoading(false)
+  const createChannel = async (createChannelRequest: CreateChannelRequest) => {
+    try {
+      setLoading(true);
+      const res = await orbis.createChannel(appContextId, {
+        group_id: appContextId,
+        pfp: createChannelRequest.pfp,
+        name: createChannelRequest.name,
+        description: createChannelRequest.description,
+        type: createChannelRequest.type,
+      });
+      if (res.status != 200) {
+        throw new Error(res.error);
       }
+    } catch (err: any) {
+      openNotification(err.message ?? err);
+    } finally {
+      setLoading(false);
+    }
     // console.log(res)
   };
 
@@ -229,8 +228,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       }
       // console.log(res)
       setCurrentPost({ ...res.data });
-      setAppState(AppState.POST_PAGE)
-      getComments(id)
+      setAppState(AppState.POST_PAGE);
+      getComments(id);
     } catch (err: any) {
       console.error(err);
       // error handle
@@ -239,7 +238,6 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       setLoading(false);
     }
   };
-
 
   const deletePost = async (id: string) => {
     try {
@@ -329,15 +327,15 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       const res = await orbis.getPosts({ master: replyTo });
       if (res.status == 200) {
         // setup comments (posts)
-        return res.data
+        return res.data;
       } else {
         throw new Error(res.error);
       }
     } catch (err: any) {
       console.error(err);
       openNotification(err.message ?? err);
-    } 
-  }
+    }
+  };
 
   const joinGroup = async () => {
     try {
@@ -406,7 +404,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         ...ch,
       });
       await getPosts(channelId);
-      setAppState(AppState.HOME_PAGE)
+      setAppState(AppState.HOME_PAGE);
     } catch (err: any) {
       console.error(err);
       openNotification(err.message ?? err);
@@ -416,24 +414,22 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
   };
 
-
-
-  const reactToPost = async (postId: string, reaction: ReactionType): Promise<boolean> => {
+  const reactToPost = async (
+    postId: string,
+    reaction: ReactionType
+  ): Promise<boolean> => {
     try {
-      const resp = await orbis.react(
-        postId,
-        reaction.toString()
-      )
-      if(resp.status == 200) {
+      const resp = await orbis.react(postId, reaction.toString());
+      if (resp.status == 200) {
         return true;
       }
-      return false
-    }catch(err: any) {
+      return false;
+    } catch (err: any) {
       console.log(err);
       openNotification(err.message ?? err);
-      return false
+      return false;
     }
-  }
+  };
 
   useEffect(() => {
     isConnected();
@@ -441,7 +437,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   }, []);
 
   return (
-    <Spin spinning={loading} tip="Loading" style={{zIndex:"1000"}}>
+    <Spin spinning={loading} tip="Loading" style={{ zIndex: "1000" }}>
       <AppContext.Provider
         value={{
           connectWallet,
@@ -463,7 +459,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           createComment,
           getReplies,
           createChannel,
-          createPost
+          createPost,
+          setAppState,
         }}
       >
         <>
