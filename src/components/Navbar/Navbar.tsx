@@ -10,8 +10,8 @@ const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-      onClose()
-  }, [context?.currentUser])
+    onClose();
+  }, [context?.currentUser]);
 
   if (context == null) return <h1>ERROR</h1>;
 

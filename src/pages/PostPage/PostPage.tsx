@@ -45,6 +45,9 @@ const PostPage = () => {
         fontSize={"2xl"}
         fontWeight={"semibold"}
         ml={5}
+        py={0}
+        display={"flex"}
+        alignItems={"flex-start"}
       />
       <Box className="ml-5 mr-10" w={"full"}>
         <PostDetailCard currentPost={currentPost} react={reactToPost} />
