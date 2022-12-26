@@ -29,7 +29,8 @@ const PostDetailCard: React.FC<PostDetailCardProps> = ({
           {unixToAgo(currentPost.timestamp)}
         </span>
       </div>
-      <h1 className="my-4">{currentPost?.content.body}</h1>
+      <h1 className="mt-4 mb-1 font-semibold">{currentPost?.content.title}</h1>
+      <p className="mb-4">{currentPost?.content.body}</p>
       <div className="flex justify-between mb-4">
         <Flex align={"center"}>
           <ChatIcon mr={2} />
