@@ -44,12 +44,12 @@ const PostPage = () => {
         _focus={{ bgColor: "transparent" }}
         fontSize={"2xl"}
         fontWeight={"semibold"}
-        ml={5}
+        ml={"25px"}
         py={0}
         display={"flex"}
         alignItems={"flex-start"}
       />
-      <Box className="ml-5 mr-10" w={"full"}>
+      <Box ml={"40px"} w={"full"} maxW={"900px"}>
         <PostDetailCard currentPost={currentPost} react={reactToPost} />
         <hr />
         <FormControl onKeyDown={addComment} mt={6}>
