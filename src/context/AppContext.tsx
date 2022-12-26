@@ -50,7 +50,8 @@ interface IAppContext {
   getReplies: (replyTo: string) => Promise<any>,
   createChannel:  (
     createChannelRequest: CreateChannelRequest
-  ) => Promise<void>
+  ) => Promise<void>,
+  createPost: (body: string, channel: string, title: string) => Promise<void>
 }
 
 export const AppContext = createContext<IAppContext | null>(null);
@@ -181,11 +182,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       setLoading(true);
       let res = await orbis.createPost({ body, context: channel, title });
       if (res.status == 200) {
-        // here fetch post and add it inside post lsit
-        setTimeout(async () => {
-          const post = await orbis.getPost(res.doc);
-          setPosts([...posts, post]);
-        }, 2000);
+        api.info({message: "Post created successfully, will be updated on page soon"})
       } else {
         throw new Error(res.error);
       }
@@ -465,7 +462,8 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           getPost,
           createComment,
           getReplies,
-          createChannel
+          createChannel,
+          createPost
         }}
       >
         <>

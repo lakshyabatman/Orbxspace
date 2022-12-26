@@ -38,6 +38,13 @@ const SideMenu = () => {
   }
 
 
+  const createPost = async (title: string, content: string) => {
+    if(!currentChannel) return;
+    context.createPost(content,currentChannel.stream_id, title);
+    onCreatePostModalClose()
+  }
+
+
   const isAdmin = context.groupDetails?.creator == context.currentUser?.did;
 
   const isAllowedToPost = isAdmin || (context.currentChannel?.content.type == ChannelType.CHAT && !!context.currentUser)
@@ -46,7 +53,7 @@ const SideMenu = () => {
   return (
     <>
       <CreatePostModal
-      
+        onSubmit={createPost}
         isOpen={isCreatePostModalOpen}
         onClose={onCreatePostModalClose}
         onOpen={onCreatePostModalOpen}
