@@ -1,8 +1,15 @@
-import { Box, FormControl, Input, Textarea } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  FormControl,
+  IconButton,
+  Input,
+  Textarea,
+} from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/AppContext";
-
-import { PostWithComments, ReactionType } from "../../models";
+import { ArrowBackIcon } from "@chakra-ui/icons";
+import { AppState, PostWithComments, ReactionType } from "../../models";
 import PostDetailCard from "../../components/PostDetailCard/PostDetailCard";
 import { CommentsView } from "../../components/CommentsView/CommentsView";
 
@@ -18,7 +25,6 @@ const PostPage = () => {
     return await context.reactToPost(currentPost.stream_id, reaction);
   };
 
-
   const addComment = async (event: any) => {
     if (event.keyCode == 13) {
       await context.createComment(comment, currentPost.stream_id, null, []);
@@ -26,32 +32,45 @@ const PostPage = () => {
   };
 
   return (
-    <Box className="mx-10">
-      <PostDetailCard currentPost={currentPost} react={reactToPost} />
-      <hr />
-      <FormControl onKeyDown={addComment} mt={6}>
-        {/* <FormLabel>Email address</FormLabel> */}
-        <Box bgColor={"#EDEDED"} p={3}>
-          <Input
-            type="text"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            required={true}
-            placeholder="Add a reply"
-            bgColor={"white"}
-            focusBorderColor={"#69248A"}
-          />
-        </Box>
-        {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
-      </FormControl>
-      <CommentsView comments={currentPostComments}/>
-    </Box>
+    <Flex flex={1}>
+      <IconButton
+        onClick={() => context.setAppState(AppState.HOME_PAGE)}
+        aria-label="Search database"
+        icon={<ArrowBackIcon />}
+        bgColor={"transparent"}
+        color={"#69248A"}
+        _hover={{ bgColor: "transparent" }}
+        _active={{ bgColor: "transparent" }}
+        _focus={{ bgColor: "transparent" }}
+        fontSize={"2xl"}
+        fontWeight={"semibold"}
+        ml={5}
+      />
+      <Box className="ml-5 mr-10" w={"full"}>
+        <PostDetailCard currentPost={currentPost} react={reactToPost} />
+        <hr />
+        <FormControl onKeyDown={addComment} mt={6}>
+          {/* <FormLabel>Email address</FormLabel> */}
+          <Box bgColor={"#EDEDED"} p={3}>
+            <Input
+              type="text"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              required={true}
+              placeholder="Add a reply"
+              bgColor={"white"}
+              focusBorderColor={"#69248A"}
+            />
+          </Box>
+          {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
+        </FormControl>
+        <CommentsView comments={currentPostComments} />
+      </Box>
+    </Flex>
   );
 };
 
 export default PostPage;
-
-
 
 // const nestedComments: Record<string, PostWithComments> = {};
 // const isComment: Record<string, boolean> = {};
@@ -68,7 +87,7 @@ export default PostPage;
 //     nestedComments[comment.stream_id] = { ...comment, comments: [] };
 //     isComment[comment.stream_id] = true;
 //   }
-  
+
 // });
 
 // console.log()
