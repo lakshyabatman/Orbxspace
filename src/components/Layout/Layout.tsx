@@ -7,12 +7,14 @@ const LayoutPage: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <Flex flexDir={"column"} className="min-h-screen">
       <Navbar />
-      <Flex bgColor={"#fcf6ff"} className="min-h-screen" px={12}>
+      <div  className="min-h-screen  grid grid-cols-8  bg-[#fcf6ff] px-12">
+        <Box  w={"full"} className="col-span-3">
         <SideMenu />
-        <Box mt={28} w={"full"}>
-          {children}
         </Box>
-      </Flex>
+        <Box mt={28} w={"full"} className="sm:col-span-5 xl:col-span-4 2xl:col-span-3">
+            {children}
+        </Box>
+      </div>
     </Flex>
   );
 };

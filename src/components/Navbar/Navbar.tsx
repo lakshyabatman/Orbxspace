@@ -46,10 +46,11 @@ const Navbar = () => {
           </Text>
         </Flex>
         <div>
-          {context.currentUser?.address ? (
+          {context.currentUser ? (
             <UserAvatar
-              connectedAddress={context.currentUser?.address}
+              connectedUser={context.currentUser}
               logout={context.logout}
+              onEditProfileSubmit={context.updateProfile}
             />
           ) : (
             <Button onClick={onOpen} size={"sm"}>

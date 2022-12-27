@@ -51,6 +51,7 @@ interface IAppContext {
   createChannel: (createChannelRequest: CreateChannelRequest) => Promise<void>;
   createPost: (body: string, channel: string, title: string) => Promise<void>;
   setAppState: (appState: AppState) => void;
+  updateProfile: (username: string, bio: string, pfp: string) => Promise<void>
 }
 
 export const AppContext = createContext<IAppContext | null>(null);
@@ -262,6 +263,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     parentComment: string | null,
     mentions: Mention[]
   ) => {
+    if(!currentUser) return
     try {
       setLoading(true);
       let res = await orbis.createPost({
@@ -273,6 +275,46 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       });
       if (res.status == 200) {
         // HERE FETCH THE COMMENT AND ADD IT INSIDE COMMENT LIST
+        api.success({message: "Comment created"})
+        if(currentPost?.stream_id == postId) {
+          // we need to add comment in the context
+          const newComment: Post ={
+            timestamp: Date.now(),
+            stream_id: res.doc,
+            creator: currentUser?.did ?? "",
+            creator_details: {
+              did: currentUser.did,
+              ...currentUser.details
+            },
+            context_details: {
+              group_id: appContextId,
+              group_details: null,
+              channel_id: currentChannel?.stream_id ?? null,
+              channel_details: null
+
+            },
+            content: {
+              body: message,
+              context: res.doc,
+              title: null
+            },
+            master: postId,
+            reply_to: null,
+            reply_to_details: {
+              body: null,
+              context: null
+            },
+            count_likes: 0,
+            count_downvotes: 0,
+            count_replies: 0,
+            count_haha: 0
+          }
+          const updatedComments = [...currentPostComments, newComment]
+          setCurrentPostComments(updatedComments)
+
+        }
+       
+
       } else {
         throw new Error(res.error);
       }
@@ -367,9 +409,9 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   };
 
   const updateProfile = async (
-    pfp: string,
     username: string,
-    description: string
+    description: string,
+    pfp: string,
   ) => {
     try {
       setLoading(true);
@@ -379,6 +421,19 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         description,
       });
       if (res.status == 200) {
+        api.success({message: "Successfully updated profile"})
+        if(!currentUser) return
+        setCurrentUser({
+          ...currentUser,
+          details: {
+            ...currentUser.details,
+            profile: {
+              pfp,
+              username,
+              description
+            }
+          }
+        })
       } else {
         throw new Error(res.error);
       }
@@ -461,6 +516,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           createChannel,
           createPost,
           setAppState,
+          updateProfile
         }}
       >
         <>

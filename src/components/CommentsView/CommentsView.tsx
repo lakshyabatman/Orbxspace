@@ -1,7 +1,6 @@
 import React from "react";
-import PostPreviewCard from "../PostPreviewCard/PostPreviewCard";
 import { Post } from "../../models";
-import CommentCard from "../CommentCard/CommentCard";
+import Comment from "../Comment/Comment";
 
 
 export interface CommentsViewProps {
@@ -13,7 +12,7 @@ export const CommentsView: React.FC<CommentsViewProps> = ({comments}) => {
   return (
     <div>
       {comments.map((comment) => (
-        <CommentCard comment={comment}/>
+        <Comment comment={comment}/>
         // <PostPreviewCard
         //   postContent={comment.content.body ?? ""}
         //   postAuthor={comment.creator_details.profile?.username ?? comment.creator_details.metadata.address}

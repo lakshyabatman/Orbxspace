@@ -51,8 +51,7 @@ const PostPage = () => {
       />
       <Box ml={"40px"} w={"full"} maxW={"900px"}>
         <PostDetailCard currentPost={currentPost} react={reactToPost} />
-        <hr />
-        <FormControl onKeyDown={addComment} mt={6}>
+        <FormControl onKeyDown={addComment} mt={6} borderTop={"1px solid black"} pt={3}>
           {/* <FormLabel>Email address</FormLabel> */}
           <Box bgColor={"#EDEDED"} p={3}>
             <Input

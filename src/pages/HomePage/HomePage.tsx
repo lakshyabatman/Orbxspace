@@ -9,7 +9,7 @@ const HomePage = () => {
   if (context == null) return <h1>ERROR</h1>;
 
   return (
-    <Box w={"full"} ml={"20px"}>
+    <Box w={"full"} ml={"20px"} className="flex flex-col items-center">
       {context.posts.map((post) => {
         return (
           <PostPreviewCard

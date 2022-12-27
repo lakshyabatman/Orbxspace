@@ -51,7 +51,7 @@ const SideMenu = () => {
       !!context.currentUser);
 
   return (
-    <>
+    <div className="flex justify-end">
       <CreatePostModal
         onSubmit={createPost}
         isOpen={isCreatePostModalOpen}
@@ -90,7 +90,6 @@ const SideMenu = () => {
               <Box
                 fontSize={"sm"}
                 py={2}
-                px={2}
                 my={2}
                 key={channel.stream_id}
                 bg={
@@ -122,7 +121,7 @@ const SideMenu = () => {
               _hover={{ bgColor: "transparent" }}
               _active={{ bgColor: "transparent" }}
               _focus={{ bgColor: "transparent" }}
-              px={2}
+              px={0}
               onClick={() => onCreateChannelModalOpen()}
             >
               Create a Channel
@@ -136,7 +135,6 @@ const SideMenu = () => {
             w={"72"}
             bg={"white"}
             height={"fit-content"}
-            px={4}
             py={1}
             pl={8}
             boxShadow={"0px 0px 20px 1px rgba(175, 92, 214, 0.25)"}
@@ -152,13 +150,14 @@ const SideMenu = () => {
               _active={{ bgColor: "transparent" }}
               _focus={{ bgColor: "transparent" }}
               onClick={() => onCreatePostModalOpen()}
+              px={0}
             >
               Create a Post
             </Button>
           </Box>
         )}
       </Flex>
-    </>
+    </div>
   );
 };
 

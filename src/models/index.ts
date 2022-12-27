@@ -9,17 +9,17 @@ export enum AppState {
   POST_PAGE = "POST_PAGE",
 }
 
-export interface Profile {
-  username: string;
-  pfp: string;
-}
 
 export interface CreatorDetails {
   did: string;
-  profile: Profile | null;
+  profile:  {
+    username: string | null;
+    pfp: string | null;
+    description: string | null
+  } | null;
   metadata: {
     address: string;
-    chain: string;
+    chain: string | null;
     ensName: string | null;
   }
 }
