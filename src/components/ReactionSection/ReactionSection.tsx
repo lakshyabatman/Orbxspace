@@ -40,7 +40,7 @@ const ReactionSection: React.FC<ReactionSectionProps> = ({hahaCounts,heartCounts
   return (
     <div className="flex ">
     <div className="flex items-center" >
-      <div onClick={() =>  reactToPost(ReactionType.Haha)}>
+      <div onClick={() =>  reactToPost(ReactionType.Haha)} className="cursor-pointer">
         <HahaIcon />
       </div>
      <span className="ml-1">
@@ -48,15 +48,15 @@ const ReactionSection: React.FC<ReactionSectionProps> = ({hahaCounts,heartCounts
      </span>
     </div>
     <div className="ml-3 mr-1 flex items-center" >
-      <div onClick={() =>  reactToPost(ReactionType.Like)}>
+      <div onClick={() =>  reactToPost(ReactionType.Like)} className="cursor-pointer">
         <HeartIcon />
       </div>
       <span className="ml-1">
         {like}
       </span>
     </div>      
-    <div className="flex items-center" onClick={() =>  reactToPost(ReactionType.Downvote)}>
-      <div onClick={() =>  reactToPost(ReactionType.Downvote)}>
+    <div className="flex items-center" >
+      <div onClick={() =>  reactToPost(ReactionType.Downvote)} className="cursor-pointer">
         <Downvote/>
       </div>
       {downvote}

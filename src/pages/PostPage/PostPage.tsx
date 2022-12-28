@@ -28,6 +28,7 @@ const PostPage = () => {
   const addComment = async (event: any) => {
     if (event.keyCode == 13) {
       await context.createComment(comment, currentPost.stream_id, null, []);
+      setComment("")
     }
   };
 

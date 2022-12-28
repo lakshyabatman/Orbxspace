@@ -51,7 +51,7 @@ const SideMenu = () => {
       !!context.currentUser);
 
   return (
-    <div className="flex justify-end">
+    <div className="flex justify-end relative" >
       <CreatePostModal
         onSubmit={createPost}
         isOpen={isCreatePostModalOpen}
@@ -64,7 +64,7 @@ const SideMenu = () => {
         onClose={onCreateChannelModalClose}
         onOpen={onCreateChannelModalOpen}
       />
-      <Flex flexDir={"column"}>
+      <Flex flexDir={"column"} position="fixed">
         <Box
           mt={28}
           rounded={"xl"}
@@ -72,7 +72,6 @@ const SideMenu = () => {
           bg={"white"}
           height={"fit-content"}
           p={4}
-          pl={8}
           boxShadow={"0px 0px 20px 1px rgba(175, 92, 214, 0.25)"}
         >
           <Text
@@ -91,6 +90,7 @@ const SideMenu = () => {
                 fontSize={"sm"}
                 py={2}
                 my={2}
+                pl={4}
                 key={channel.stream_id}
                 bg={
                   currentChannel?.stream_id === channel.stream_id
@@ -112,6 +112,7 @@ const SideMenu = () => {
           })}
           {isAdmin && (
             <Button
+              pl={4}
               leftIcon={<AddIcon />}
               aria-label="Create Channel"
               bgColor={"transparent"}

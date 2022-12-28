@@ -23,7 +23,7 @@ const PostDetailCard: React.FC<PostDetailCardProps> = ({
           src={currentPost.creator_details.profile?.pfp ?? ""}
         />
         <span className="mr-3 text-md">
-          {currentPost.creator_details.profile?.username ?? ""}
+          {currentPost.creator_details.profile?.username?.slice(0,16) ?? currentPost.creator_details.metadata.address.slice(0,16)}
         </span>
         <span className="text-gray-500 text-md">
           {unixToAgo(currentPost.timestamp)}

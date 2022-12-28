@@ -46,7 +46,7 @@ interface IAppContext {
     postId: string,
     parentComment: string | null,
     mentions: Mention[]
-  ) => Promise<void>;
+  ) => Promise<Post | undefined>;
   getReplies: (replyTo: string) => Promise<any>;
   createChannel: (createChannelRequest: CreateChannelRequest) => Promise<void>;
   createPost: (body: string, channel: string, title: string) => Promise<void>;
@@ -68,8 +68,10 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const [orbis, setOrbis] = useState(new Orbis());
 
-  const appContextId =
-    "kjzl6cwe1jw146bflbengus71iqrkzqhrqxfhotdjd3kzyo3hvx96p5fvo9c5ci";
+
+  const wrapperElement = document.getElementById("orbis-framework")
+
+  const appContextId = wrapperElement?.getAttribute("data-app-context") ?? ""
 
   const [connectedAddress, setConnectedAddress] = useState<string | null>(null);
 
@@ -154,6 +156,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const getGroupDetails = async () => {
     try {
+      if(!appContextId) return;
       setLoading(true);
       const res = await orbis.getGroup(appContextId);
       if (res.status != 200) {
@@ -179,12 +182,47 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const createPost = async (body: string, channel: string, title: string) => {
     try {
+      if(!currentUser) return;
       setLoading(true);
       let res = await orbis.createPost({ body, context: channel, title });
       if (res.status == 200) {
-        api.info({
-          message: "Post created successfully, will be updated on page soon",
+        api.success({
+          message: "Post created successfully",
         });
+        const newPost: Post ={
+          timestamp: Date.now()/1000,
+          stream_id: res.doc,
+          creator: currentUser?.did ?? "",
+          creator_details: {
+            did: currentUser.did,
+            ...currentUser.details
+          },
+          context_details: {
+            group_id: appContextId,
+            group_details: null,
+            channel_id: currentChannel?.stream_id ?? null,
+            channel_details: null
+
+          },
+          content: {
+            body,
+            context: res.doc,
+            title
+          },
+          master: null,
+          reply_to: null,
+          reply_to_details: {
+            body: null,
+            context: null
+          },
+          count_likes: 0,
+          count_downvotes: 0,
+          count_replies: 0,
+          count_haha: 0
+        }
+        const updatedPosts = [newPost, ...posts]
+        setPosts(updatedPosts)
+
       } else {
         throw new Error(res.error);
       }
@@ -201,6 +239,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const createChannel = async (createChannelRequest: CreateChannelRequest) => {
     try {
+      if(!currentGroup) return;
       setLoading(true);
       const res = await orbis.createChannel(appContextId, {
         group_id: appContextId,
@@ -212,6 +251,20 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       if (res.status != 200) {
         throw new Error(res.error);
       }
+      const newChannel: Channel = {
+        stream_id: res.doc,
+        content: {
+          name: createChannelRequest.name,
+          description: createChannelRequest.description,
+          type: createChannelRequest.type,
+          group_id: currentGroup.stream_id
+        }
+      }
+      const updatedChannelList = [...currentGroup.channels, newChannel]
+      setCurrentGroup({
+        ...currentGroup,
+        channels: updatedChannelList
+      })
     } catch (err: any) {
       openNotification(err.message ?? err);
     } finally {
@@ -262,7 +315,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     postId: string,
     parentComment: string | null,
     mentions: Mention[]
-  ) => {
+  ): Promise<Post | undefined> => {
     if(!currentUser) return
     try {
       setLoading(true);
@@ -279,7 +332,7 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         if(currentPost?.stream_id == postId) {
           // we need to add comment in the context
           const newComment: Post ={
-            timestamp: Date.now(),
+            timestamp: Date.now()/1000,
             stream_id: res.doc,
             creator: currentUser?.did ?? "",
             creator_details: {
@@ -311,7 +364,43 @@ const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           }
           const updatedComments = [...currentPostComments, newComment]
           setCurrentPostComments(updatedComments)
+          setCurrentPost({
+            ...currentPost,
+            count_replies: currentPost.count_replies+1
+          })
 
+        }else {
+          return {
+            timestamp: Date.now()/1000,
+            stream_id: res.doc,
+            creator: currentUser?.did ?? "",
+            creator_details: {
+              did: currentUser.did,
+              ...currentUser.details
+            },
+            context_details: {
+              group_id: appContextId,
+              group_details: null,
+              channel_id: currentChannel?.stream_id ?? null,
+              channel_details: null
+
+            },
+            content: {
+              body: message,
+              context: res.doc,
+              title: null
+            },
+            master: postId,
+            reply_to: null,
+            reply_to_details: {
+              body: null,
+              context: null
+            },
+            count_likes: 0,
+            count_downvotes: 0,
+            count_replies: 0,
+            count_haha: 0
+          }
         }
        
 

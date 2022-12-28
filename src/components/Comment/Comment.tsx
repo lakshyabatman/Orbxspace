@@ -19,8 +19,12 @@ const Comment: React.FC<CommentCardProps> = ({ comment }) => {
 
   const addComment = async (event: any) => {
     if (event.keyCode == 13) {
-      await context.createComment(reply, comment.stream_id, null, []);
+      const res = await context.createComment(reply, comment.stream_id, null, []);
       setReply("")
+
+      if(res){
+        setReplies([...replies, res])
+      }
     }
   };
 
@@ -32,10 +36,10 @@ const Comment: React.FC<CommentCardProps> = ({ comment }) => {
 
   return (
     <div className="my-4  ">
-      <CommentCard comment={comment}/>
-      <FormControl onKeyDown={addComment} mt={4} ml={6}>
+      <CommentCard comment={comment} showReplies/>
+      <FormControl onKeyDown={addComment} mt={4} >
         {/* <FormLabel>Email address</FormLabel> */}
-        <Box bgColor={"#EDEDED"} p={3}>
+        <Box bgColor={"#EDEDED"} p={3} ml={14}>
           <Input
             type="text"
             value={reply}
@@ -48,16 +52,17 @@ const Comment: React.FC<CommentCardProps> = ({ comment }) => {
         </Box>
         {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
       </FormControl>
-      <div className="ml-6">
+      <div className="ml-14">
         {replies.map((cmt) => {
           return (
             <div className="my-3">
-             <CommentCard comment={cmt}/>
+             <CommentCard comment={cmt} showReplies={false}/>
             </div>
           );
         })}
-        <div className="border-b border-solid border-black mt-3"/>
       </div>
+      <div className="border-b border-solid border-black mt-5"/>
+
     </div>
   );
 };

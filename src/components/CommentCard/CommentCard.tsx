@@ -9,9 +9,10 @@ import ReactionSection from '../ReactionSection/ReactionSection'
 
 
 interface CommentCardProps {
-    comment: Post
+    comment: Post,
+    showReplies: boolean
 }
-const CommentCard: React.FC<CommentCardProps> = ({comment}) => {
+const CommentCard: React.FC<CommentCardProps> = ({comment, showReplies = true}) => {
 
     const context = useContext(AppContext);
 
@@ -33,7 +34,7 @@ const CommentCard: React.FC<CommentCardProps> = ({comment}) => {
           <div className="flex items-center">
             <Avatar size={"sm"} mr={3} src={comment.creator_details.profile?.pfp ?? ""} />
             <Text fontSize={"sm"} mr={3}>
-              {comment.creator_details.profile?.username ?? comment.creator_details.metadata.address}
+              {comment.creator_details.profile?.username?.slice(0,16) ?? comment.creator_details.metadata.address.slice(0,16)}
             </Text>
             <Text fontSize={"xs"} color={"gray.500"}>
               {unixToAgo(comment.timestamp)}
@@ -58,8 +59,12 @@ const CommentCard: React.FC<CommentCardProps> = ({comment}) => {
       >
         <Flex align={"center"} justify={"space-between"} className="w-full">
             <Flex align={"center"}>
-            <ChatIcon mr={2} />
-            <Text>{comment.count_replies} Replies</Text>
+            {showReplies && (
+                <>
+                <ChatIcon mr={2} />
+                <Text>{comment.count_replies} Replies</Text>
+                </>
+            )}
             </Flex>
             <ReactionSection
                 downvoteCounts={comment.count_downvotes}

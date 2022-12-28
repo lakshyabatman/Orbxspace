@@ -8,10 +8,10 @@ const LayoutPage: React.FC<PropsWithChildren> = ({ children }) => {
     <Flex flexDir={"column"} className="min-h-screen">
       <Navbar />
       <div  className="min-h-screen  grid grid-cols-8  bg-[#fcf6ff] px-12">
-        <Box  w={"full"} className="col-span-3">
+        <Box  w={"full"} className="2xl:col-span-3 lg:col-span-2 col-span-3">
         <SideMenu />
         </Box>
-        <Box mt={28} w={"full"} className="sm:col-span-5 xl:col-span-4 2xl:col-span-3">
+        <Box mt={28} w={"full"} className="col-span-5 xl:col-span-4 2xl:col-span-3">
             {children}
         </Box>
       </div>
