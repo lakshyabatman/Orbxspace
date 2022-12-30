@@ -34,7 +34,7 @@ export const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
             placeholder="Eg: Chill Sesh"
             value={channelName}
             onChange={(e) => setChannelName(e.target.value)}
-            className="rounded-md focus:border-[#69248A] mr-4"
+            className="mr-4 rounded-md"
             style={{
               boxShadow: "0px 0px 20px 1px rgba(175, 92, 214, 0.25)",
             }}

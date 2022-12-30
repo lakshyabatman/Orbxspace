@@ -82,7 +82,7 @@ const SideMenu = () => {
                 onClick={() => context.moveToChannel(channel.stream_id)}
                 className={`text-sm py-2 my-2 pl-4 cursor-pointer rounded-md ${
                   currentChannel?.stream_id === channel.stream_id &&
-                  "bg-[#F3E8FF] border-r-[6px solid #AF5CD6]"
+                  "bg-[#F3E8FF] border-r-4 border-r-[#69248A]"
                 }`}
               >
                 {channel.content.name}

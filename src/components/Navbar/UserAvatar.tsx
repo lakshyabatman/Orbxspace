@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Popover } from "antd";
+import { Avatar, Button, Popover } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { Profile } from "../../models";
 import { useDisclosure } from "../../hooks/useDisclosure";
@@ -33,20 +33,20 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({
       <Popover
         content={
           <div className="flex flex-col items-center w-32">
-            <button
+            <Button
               className="mb-2 hover:bg-[#F3E7F9] w-full py-1 rounded-lg"
               onClick={() => onOpen()}
             >
               <>Update Profile</>
-            </button>
-            <button
+            </Button>
+            <Button
               className="hover:bg-[#F3E7F9] w-full py-1 rounded-lg"
               onClick={() => {
                 logout();
               }}
             >
               Log Out
-            </button>
+            </Button>
           </div>
         }
         trigger="click"

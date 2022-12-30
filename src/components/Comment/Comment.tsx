@@ -48,7 +48,6 @@ const Comment: React.FC<CommentCardProps> = ({ comment }) => {
           onChange={(e) => setReply(e.target.value)}
           required={true}
           placeholder="Add a reply"
-          className="bg-white focus:border-[#69248A] focus:outline-none"
           onKeyDown={addComment}
         />
       </div>
