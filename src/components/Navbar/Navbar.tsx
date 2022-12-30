@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
-import { Avatar, Button, useDisclosure } from "@chakra-ui/react";
+import { Avatar, Button } from "antd";
+import { useDisclosure } from "../../hooks/useDisclosure";
 import { AppContext } from "../../context/AppContext";
-import { Flex, Text } from "@chakra-ui/react";
 import { UserAvatar } from "./UserAvatar";
 import { ConnectModal } from "./modals/ConnectModal";
 
@@ -18,33 +18,23 @@ const Navbar = () => {
   return (
     <>
       <ConnectModal isOpen={isOpen} onClose={onClose} />
-      <Flex
-        w={"full"}
-        h={20}
-        bgColor={"#69248A"}
-        position="fixed"
-        px={16}
-        top={0}
-        zIndex={1}
-        justify={"space-between"}
-        align={"center"}
-      >
-        <Flex align={"center"}>
+      <div className="w-full flex h-20 bg-[#69248A] fixed px-16 top-0 z-10 justify-between items-center">
+        <div className="items-center">
           {/* Community data */}
           {context.groupDetails?.content.pfp ? (
             <Avatar
               src={context.groupDetails?.content.pfp}
-              name="group pfp"
-              mr={8}
+              className="mr-4"
+              size={"default"}
             />
           ) : null}
 
-          <Text color={"white"} fontSize={"xl"}>
+          <p className="text-xl text-white" color={"white"}>
             {context.groupDetails?.content.name
               ? context.groupDetails.content.name.toUpperCase()
               : null}
-          </Text>
-        </Flex>
+          </p>
+        </div>
         <div>
           {context.currentUser ? (
             <UserAvatar
@@ -53,12 +43,17 @@ const Navbar = () => {
               onEditProfileSubmit={context.updateProfile}
             />
           ) : (
-            <Button onClick={onOpen} size={"sm"}>
+            <Button
+              type={"primary"}
+              onClick={onOpen}
+              size={"large"}
+              className="text-[24px] bg-gradient-to-r from-[#EF88D2] to-[#AF5CD6] border-none"
+            >
               Connect Wallet
             </Button>
           )}
         </div>
-      </Flex>
+      </div>
     </>
   );
 };
