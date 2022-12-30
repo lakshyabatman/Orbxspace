@@ -1,6 +1,6 @@
+import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { ChatIcon } from "@chakra-ui/icons";
-import { Avatar } from "antd";
 import React, { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import { Post, ReactionType } from "../../models";

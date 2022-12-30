@@ -1,9 +1,8 @@
-import { Box, FormControl, Input } from "@chakra-ui/react";
+import { Input } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import { Post } from "../../models";
 import CommentCard from "../CommentCard/CommentCard";
-import PostPreviewCard from "../PostPreviewCard/PostPreviewCard";
 
 export interface CommentCardProps {
   comment: Post;
@@ -42,21 +41,18 @@ const Comment: React.FC<CommentCardProps> = ({ comment }) => {
   return (
     <div className="my-4 ">
       <CommentCard comment={comment} showReplies />
-      <FormControl onKeyDown={addComment} mt={4}>
-        {/* <FormLabel>Email address</FormLabel> */}
-        <Box bgColor={"#EDEDED"} p={3} ml={14}>
-          <Input
-            type="text"
-            value={reply}
-            onChange={(e) => setReply(e.target.value)}
-            required={true}
-            placeholder="Add a reply"
-            bgColor={"white"}
-            focusBorderColor={"#69248A"}
-          />
-        </Box>
-        {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
-      </FormControl>
+      <div className="bg-[#EDEDED] p-3 ml-14">
+        <Input
+          type="text"
+          value={reply}
+          onChange={(e) => setReply(e.target.value)}
+          required={true}
+          placeholder="Add a reply"
+          className="bg-white focus:border-[#69248A] focus:outline-none"
+          onKeyDown={addComment}
+        />
+      </div>
+
       <div className="ml-14">
         {replies.map((cmt) => {
           return (
