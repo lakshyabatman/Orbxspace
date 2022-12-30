@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
-import { Box, Button, Flex, IconButton, Text } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { useDisclosure } from "@chakra-ui/react";
 import { CreatePostModal } from "../CreatePostModal/CreatePostModal";
 import { CreateChannelModal } from "../CreateChannelModal/CreateChannelModal";
 import { ChannelType } from "../../models";
+import { Button } from "antd";
+import { PlusCircleOutlined, PlusCircleFilled } from "@ant-design/icons";
 
 const SideMenu = () => {
   const context = useContext(AppContext);
@@ -51,7 +52,7 @@ const SideMenu = () => {
       !!context.currentUser);
 
   return (
-    <div className="flex justify-end relative" >
+    <div className="relative flex justify-end">
       <CreatePostModal
         onSubmit={createPost}
         isOpen={isCreatePostModalOpen}
@@ -64,100 +65,63 @@ const SideMenu = () => {
         onClose={onCreateChannelModalClose}
         onOpen={onCreateChannelModalOpen}
       />
-      <Flex flexDir={"column"} position="fixed">
-        <Box
-          mt={28}
-          rounded={"xl"}
-          w={"72"}
-          bg={"white"}
-          height={"fit-content"}
-          p={4}
-          boxShadow={"0px 0px 20px 1px rgba(175, 92, 214, 0.25)"}
+      <div className="fixed flex flex-col">
+        <div
+          style={{
+            boxShadow: "0px 0px 20px 1px rgba(175, 92, 214, 0.25)",
+          }}
+          className="p-4 bg-white mt-28 w-72 h-fit-content rounded-xl"
         >
-          <Text
-            fontSize={"lg"}
-            fontWeight={"semibold"}
-            mb={6}
-            color={"#2D083F"}
-            borderBottom={"1px"}
-            pb={2}
-          >
+          <p className="text-lg font-semibold mb-6 color-[#2D083F] border-b-1 pb-2">
             Channels
-          </Text>
+          </p>
           {context.groupDetails?.channels.map((channel) => {
             return (
-              <Box
-                fontSize={"sm"}
-                py={2}
-                my={2}
-                pl={4}
+              <div
                 key={channel.stream_id}
-                bg={
-                  currentChannel?.stream_id === channel.stream_id
-                    ? "#F3E8FF"
-                    : "white"
-                }
-                borderRight={
-                  currentChannel?.stream_id === channel.stream_id
-                    ? "6px solid #AF5CD6"
-                    : "none"
-                }
-                rounded={"md"}
-                cursor={"pointer"}
                 onClick={() => context.moveToChannel(channel.stream_id)}
+                className={`text-sm py-2 my-2 pl-4 cursor-pointer rounded-md ${
+                  currentChannel?.stream_id === channel.stream_id &&
+                  "bg-[#F3E8FF] border-r-[6px solid #AF5CD6]"
+                }`}
               >
                 {channel.content.name}
-              </Box>
+              </div>
             );
           })}
           {isAdmin && (
             <Button
-              pl={4}
-              leftIcon={<AddIcon />}
-              aria-label="Create Channel"
-              bgColor={"transparent"}
-              color={"#2D083F"}
-              fontWeight={"semibold"}
-              fontSize={"sm"}
-              _hover={{ bgColor: "transparent" }}
-              _active={{ bgColor: "transparent" }}
-              _focus={{ bgColor: "transparent" }}
-              px={0}
+              block
+              type="text"
+              size="middle"
+              icon={<PlusCircleOutlined />}
               onClick={() => onCreateChannelModalOpen()}
+              className="flex items-center text-left"
             >
-              Create a Channel
+              <p className="ml-2">Create a Channel</p>
             </Button>
           )}
-        </Box>
+        </div>
         {isAllowedToPost && (
-          <Box
-            mt={8}
-            rounded={"xl"}
-            w={"72"}
-            bg={"white"}
-            height={"fit-content"}
-            py={1}
-            pl={8}
-            boxShadow={"0px 0px 20px 1px rgba(175, 92, 214, 0.25)"}
+          <div
+            className="py-1 mt-8 bg-white rounded-xl w-72 h-fit-content"
+            style={{ boxShadow: "0px 0px 20px 1px rgba(175, 92, 214, 0.25)" }}
           >
             <Button
-              leftIcon={<AddIcon />}
-              aria-label="Create Post"
-              bgColor={"transparent"}
-              color={"#2D083F"}
-              fontWeight={"semibold"}
-              fontSize={"sm"}
-              _hover={{ bgColor: "transparent" }}
-              _active={{ bgColor: "transparent" }}
-              _focus={{ bgColor: "transparent" }}
+              block
+              type="text"
+              size="middle"
+              icon={
+                <PlusCircleFilled className="text-2xl text-gray-200 bg-black rounded-full" />
+              }
+              className="flex items-center pl-16"
               onClick={() => onCreatePostModalOpen()}
-              px={0}
             >
-              Create a Post
+              <p className="ml-4">Create Post</p>
             </Button>
-          </Box>
+          </div>
         )}
-      </Flex>
+      </div>
     </div>
   );
 };

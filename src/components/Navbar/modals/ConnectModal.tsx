@@ -21,8 +21,6 @@ export const ConnectModal = ({ isOpen, onClose }: ConnectModalProps) => {
         footer
         wrapClassName="bg-[#F2F2F2] bg-opacity-50 backdrop-filter backdrop-blur-sm"
       >
-        {/* <ModalOverlay backdropFilter="blur(10px)" /> */}
-
         <div className="py-8">
           <div className="text-center">
             <p className="text-3xl text-[#69248A] font-semibold">
