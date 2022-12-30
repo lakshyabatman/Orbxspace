@@ -1,56 +1,62 @@
-import {
-  Avatar,
-  Button,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverTrigger,
-  useDisclosure,
-} from "@chakra-ui/react";
 import React from "react";
+import { Avatar, Popover } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 import { Profile } from "../../models";
-
+import { useDisclosure } from "../../hooks/useDisclosure";
 import { EditProfileModal } from "../EditProfileModal/EditProfileModal";
 
 interface UserAvatarProps {
-  connectedUser: Profile
+  connectedUser: Profile;
   logout: () => void;
-  onEditProfileSubmit: (user: string, bio: string, pfp: string) => Promise<void>
+  onEditProfileSubmit: (
+    user: string,
+    bio: string,
+    pfp: string
+  ) => Promise<void>;
 }
 
-export const UserAvatar: React.FC<UserAvatarProps> = ({ connectedUser, logout , onEditProfileSubmit}) => {
+export const UserAvatar: React.FC<UserAvatarProps> = ({
+  connectedUser,
+  logout,
+  onEditProfileSubmit,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <EditProfileModal isOpen={isOpen} onClose={onClose} onOpen={onOpen} onSubmit={onEditProfileSubmit} />
-      <Popover>
-        <PopoverTrigger>
-          <Avatar size={"sm"} src={connectedUser.details.profile?.pfp ?? ""}/>
-        </PopoverTrigger>
-        <PopoverContent width={64}>
-          <PopoverArrow />
-          <PopoverCloseButton />
-          <PopoverHeader>{connectedUser.address.slice(0, 8) + `...`}</PopoverHeader>
-          <PopoverBody textAlign={"center"}>
-            <div className="flex flex-col items-center">
-              <Button className="mb-2" size={"sm"} onClick={() => onOpen()}>
-                <>Update Profile</>
-              </Button>
-              <Button
-                size={"sm"}
-                onClick={() => {
-                  logout();
-                }}
-              >
-                Log Out
-              </Button>
-            </div>
-          </PopoverBody>
-        </PopoverContent>
+      <EditProfileModal
+        isOpen={isOpen}
+        onClose={onClose}
+        onOpen={onOpen}
+        onSubmit={onEditProfileSubmit}
+      />
+      <Popover
+        content={
+          <div className="flex flex-col items-center w-32">
+            <button
+              className="mb-2 hover:bg-[#F3E7F9] w-full py-1 rounded-lg"
+              onClick={() => onOpen()}
+            >
+              <>Update Profile</>
+            </button>
+            <button
+              className="hover:bg-[#F3E7F9] w-full py-1 rounded-lg"
+              onClick={() => {
+                logout();
+              }}
+            >
+              Log Out
+            </button>
+          </div>
+        }
+        trigger="click"
+      >
+        <Avatar
+          size={"large"}
+          icon={<UserOutlined />}
+          src={connectedUser.details.profile?.pfp ?? ""}
+          className="flex items-center justify-center cursor-pointer bg-[#D9D9D9] text-black"
+        />
       </Popover>
     </>
   );
