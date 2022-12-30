@@ -1,83 +1,73 @@
-import { ChatIcon } from '@chakra-ui/icons'
-import { Avatar, Box, Flex, Text } from '@chakra-ui/react'
-import { comment } from 'postcss'
-import React, { useContext } from 'react'
-import { AppContext } from '../../context/AppContext'
-import { Post, ReactionType } from '../../models'
-import { unixToAgo } from '../../utilities/unixToAgo'
-import ReactionSection from '../ReactionSection/ReactionSection'
-
+import { UserOutlined } from "@ant-design/icons";
+import { ChatIcon } from "@chakra-ui/icons";
+import { Avatar } from "antd";
+import React, { useContext } from "react";
+import { AppContext } from "../../context/AppContext";
+import { Post, ReactionType } from "../../models";
+import { unixToAgo } from "../../utilities/unixToAgo";
+import ReactionSection from "../ReactionSection/ReactionSection";
 
 interface CommentCardProps {
-    comment: Post,
-    showReplies: boolean
+  comment: Post;
+  showReplies: boolean;
 }
-const CommentCard: React.FC<CommentCardProps> = ({comment, showReplies = true}) => {
+const CommentCard: React.FC<CommentCardProps> = ({
+  comment,
+  showReplies = true,
+}) => {
+  const context = useContext(AppContext);
 
-    const context = useContext(AppContext);
+  if (context == null) return <h1>ERROR</h1>;
 
-    if (context == null) return <h1>ERROR</h1>;
-
-    const reactToPost = async (reaction: ReactionType): Promise<boolean> => {
-        return await context.reactToPost(comment.stream_id, reaction);
-    };
+  const reactToPost = async (reaction: ReactionType): Promise<boolean> => {
+    return await context.reactToPost(comment.stream_id, reaction);
+  };
 
   return (
-    <Box
-      w={"full"}
-      maxW={"1200px"}
-      rounded={"md"}
-      px={4}
-      pt={4}
-    >
-        <Flex align={"center"} justify={"space-between"} className="w-full">
-          <div className="flex items-center">
-            <Avatar size={"sm"} mr={3} src={comment.creator_details.profile?.pfp ?? ""} />
-            <Text fontSize={"sm"} mr={3}>
-              {comment.creator_details.profile?.username?.slice(0,16) ?? comment.creator_details.metadata.address.slice(0,16)}
-            </Text>
-            <Text fontSize={"xs"} color={"gray.500"}>
-              {unixToAgo(comment.timestamp)}
-            </Text>
-          </div>
-        </Flex>
-      <Flex
-        justify={"space-between"}
-      >
-        <div >
-          <Text fontWeight={"semibold"} mb={1}>
-            {comment.content.title}
-          </Text>
-          <Text>{comment.content.body}</Text>
+    <div className="w-full max-w-[1200px] rounded-md px-4 pt-4">
+      <div className="flex items-center justify-between w-full">
+        <div className="flex items-center">
+          <Avatar
+            size={"small"}
+            className="flex items-center justify-center cursor-pointer bg-[#D9D9D9] text-black mr-3"
+            icon={<UserOutlined />}
+            src={comment.creator_details.profile?.pfp ?? ""}
+          />
+          <p className="mr-3 text-sm">
+            {comment.creator_details.profile?.username?.slice(0, 16) ??
+              comment.creator_details.metadata.address.slice(0, 16)}
+          </p>
+          <p className="text-xs text-gray-500">
+            {unixToAgo(comment.timestamp)}
+          </p>
         </div>
-        
-      </Flex>
-      <Flex
-        justify={"space-between"}
-        mt={4}
-        py={2}
-      >
-        <Flex align={"center"} justify={"space-between"} className="w-full">
-            <Flex align={"center"}>
+      </div>
+      <div className="flex justify-between">
+        <div>
+          <p className="mb-1 font-semibold">{comment.content.title}</p>
+          <p>{comment.content.body}</p>
+        </div>
+      </div>
+      <div className="flex justify-between py-2 mt-4">
+        <div className="flex items-center justify-between w-full">
+          <div className="flex items-center">
             {showReplies && (
-                <>
+              <>
                 <ChatIcon mr={2} />
-                <Text>{comment.count_replies} Replies</Text>
-                </>
+                <p>{comment.count_replies} Replies</p>
+              </>
             )}
-            </Flex>
-            <ReactionSection
-                downvoteCounts={comment.count_downvotes}
-                hahaCounts={comment.count_haha}
-                heartCounts={comment.count_likes}
-                react={reactToPost}
-            />
-        </Flex>
-      </Flex>
-    </Box>
-  )
-}
+          </div>
+          <ReactionSection
+            downvoteCounts={comment.count_downvotes}
+            hahaCounts={comment.count_haha}
+            heartCounts={comment.count_likes}
+            react={reactToPost}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
 
-export default CommentCard
-
-
+export default CommentCard;

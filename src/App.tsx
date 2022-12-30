@@ -6,11 +6,11 @@ import { ChakraProvider } from "@chakra-ui/react";
 const App = () => {
   return (
     <div>
-      <AppProvider>
-        <ChakraProvider>
+      <ChakraProvider>
+        <AppProvider>
           <Application />
-        </ChakraProvider>
-      </AppProvider>
+        </AppProvider>
+      </ChakraProvider>
     </div>
   );
 };
