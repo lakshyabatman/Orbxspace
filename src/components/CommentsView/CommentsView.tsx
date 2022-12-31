@@ -7,7 +7,6 @@ export interface CommentsViewProps {
 }
 
 export const CommentsView: React.FC<CommentsViewProps> = ({ comments }) => {
-  console.log(comments);
   return (
     <div>
       {comments.map((comment) => (

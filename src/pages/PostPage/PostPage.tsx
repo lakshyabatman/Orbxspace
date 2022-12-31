@@ -36,7 +36,7 @@ const PostPage = () => {
       />
       <div className="ml-[40px] w-full max-w-4xl py-4">
         <PostDetailCard currentPost={currentPost} react={reactToPost} />
-        <form className="pt-3 mt-6 border-t border-black border-solid">
+        <div className="pt-3 mt-6 border-t border-black border-solid" >
           <div className="bg-[#EDEDED] p-3">
             <Input
               type="text"
@@ -47,7 +47,7 @@ const PostPage = () => {
               onKeyDown={addComment}
             />
           </div>
-        </form>
+        </div>
         <CommentsView comments={currentPostComments} />
       </div>
     </div>
