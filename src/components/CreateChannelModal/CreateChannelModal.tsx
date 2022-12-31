@@ -28,7 +28,7 @@ export const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
       footer
       wrapClassName="bg-[#F2F2F2] bg-opacity-50 backdrop-filter backdrop-blur-sm"
     >
-      <div className="py-8">
+      <div>
         <div className="mb-24 text-center">
           <p className="text-2xl text-[#69248A] font-semibold">
             Add a New Channel
@@ -60,7 +60,7 @@ export const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
             }}
           />
         </div>
-        <div className="flex justify-center w-full">
+        <div className="w-full text-center">
           <Button
             type={"primary"}
             size={"large"}
