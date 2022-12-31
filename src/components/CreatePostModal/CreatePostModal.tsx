@@ -28,7 +28,7 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
       width={720}
       wrapClassName="bg-[#F2F2F2] bg-opacity-50 backdrop-filter backdrop-blur-sm"
     >
-      <div className="py-8">
+      <div>
         <div className="mb-8 text-center">
           <p className="text-2xl text-[#69248A] font-semibold">Create a post</p>
         </div>
@@ -43,18 +43,19 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({
             placeholder="(Optional)"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="mb-8 rounded-md"
+            className="mb-8 rounded-sm"
             style={{
               boxShadow: "0px 0px 20px 1px rgba(175, 92, 214, 0.25)",
             }}
             required={true}
+            size="large"
           />
           <p className="mb-1 text-xs font-semibold">CONTENT</p>
           <TextArea
             placeholder="Content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="mb-8 rounded-md resize-none min-h-[200px]"
+            className="mb-8 rounded-sm resize-none min-h-[200px]"
             style={{
               boxShadow: "0px 0px 20px 1px rgba(175, 92, 214, 0.25)",
             }}
