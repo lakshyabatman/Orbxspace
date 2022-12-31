@@ -20,7 +20,14 @@ export const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
   const [loading, setLoading] = useState(false);
 
   return (
-    <Modal open={isOpen} onCancel={onClose} centered className="w-xl" footer>
+    <Modal
+      open={isOpen}
+      onCancel={onClose}
+      centered
+      className="w-xl"
+      footer
+      wrapClassName="bg-[#F2F2F2] bg-opacity-50 backdrop-filter backdrop-blur-sm"
+    >
       <div className="py-8">
         <div className="mb-24 text-center">
           <p className="text-2xl text-[#69248A] font-semibold">
