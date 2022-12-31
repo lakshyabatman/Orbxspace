@@ -55,8 +55,8 @@ const PostPreviewCard = ({
           <p>{postContent}</p>
         </div>
         <div className="flex items-center">
-          <ChatIcon mr={2} />
-          <p>{replyCounts} Replies</p>
+          <ChatIcon />
+          <p className="ml-2">{replyCounts} Replies</p>
         </div>
       </div>
       <div className="flex justify-between py-2 mt-4 border-black border-t-1">

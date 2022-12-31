@@ -53,8 +53,8 @@ const CommentCard: React.FC<CommentCardProps> = ({
           <div className="flex items-center">
             {showReplies && (
               <>
-                <ChatIcon mr={2} />
-                <p>{comment.count_replies} Replies</p>
+                <ChatIcon />
+                <p className="ml-2">{comment.count_replies} Replies</p>
               </>
             )}
           </div>

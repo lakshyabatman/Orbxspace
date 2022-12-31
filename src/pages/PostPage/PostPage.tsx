@@ -1,17 +1,10 @@
-import {
-  Box,
-  Flex,
-  FormControl,
-  IconButton,
-  Input,
-  Textarea,
-} from "@chakra-ui/react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import { AppState, PostWithComments, ReactionType } from "../../models";
+import { AppState, ReactionType } from "../../models";
 import PostDetailCard from "../../components/PostDetailCard/PostDetailCard";
 import { CommentsView } from "../../components/CommentsView/CommentsView";
+import { Button, Input } from "antd";
 
 const PostPage = () => {
   const context = useContext(AppContext);
@@ -28,48 +21,36 @@ const PostPage = () => {
   const addComment = async (event: any) => {
     if (event.keyCode == 13) {
       await context.createComment(comment, currentPost.stream_id, null, []);
-      setComment("")
+      setComment("");
     }
   };
 
   return (
-    <Flex flex={1}>
-      <IconButton
+    <div className="flex flex-1">
+      <Button
+        type="text"
         onClick={() => context.setAppState(AppState.HOME_PAGE)}
         aria-label="Search database"
         icon={<ArrowBackIcon />}
-        bgColor={"transparent"}
-        color={"#69248A"}
-        _hover={{ bgColor: "transparent" }}
-        _active={{ bgColor: "transparent" }}
-        _focus={{ bgColor: "transparent" }}
-        fontSize={"2xl"}
-        fontWeight={"semibold"}
-        ml={"25px"}
-        py={0}
-        display={"flex"}
-        alignItems={"flex-start"}
+        className="bg-transparent text-[#69248A] text-2xl font-semibold ml-[25px] py-0"
       />
-      <Box ml={"40px"} w={"full"} maxW={"900px"}>
+      <div className="ml-[40px] w-full max-w-4xl py-4">
         <PostDetailCard currentPost={currentPost} react={reactToPost} />
-        <FormControl onKeyDown={addComment} mt={6} borderTop={"1px solid black"} pt={3}>
-          {/* <FormLabel>Email address</FormLabel> */}
-          <Box bgColor={"#EDEDED"} p={3}>
+        <form className="pt-3 mt-6 border-t border-black border-solid">
+          <div className="bg-[#EDEDED] p-3">
             <Input
               type="text"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               required={true}
               placeholder="Add a reply"
-              bgColor={"white"}
-              focusBorderColor={"#69248A"}
+              onKeyDown={addComment}
             />
-          </Box>
-          {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
-        </FormControl>
+          </div>
+        </form>
         <CommentsView comments={currentPostComments} />
-      </Box>
-    </Flex>
+      </div>
+    </div>
   );
 };
 

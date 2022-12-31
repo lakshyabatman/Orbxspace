@@ -35,9 +35,9 @@ const PostDetailCard: React.FC<PostDetailCardProps> = ({
       <h1 className="mt-4 mb-1 font-semibold">{currentPost?.content.title}</h1>
       <p className="mb-4">{currentPost?.content.body}</p>
       <div className="flex justify-between mb-4">
-        <div className="flex text-center">
-          <ChatIcon mr={2} />
-          <span>{currentPost.count_replies} Replies</span>
+        <div className="flex items-center">
+          <ChatIcon />
+          <span className="ml-2">{currentPost.count_replies} Replies</span>
         </div>
         <ReactionSection
           heartCounts={currentPost.count_likes}
