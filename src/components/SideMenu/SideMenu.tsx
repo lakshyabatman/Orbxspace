@@ -5,7 +5,7 @@ import { useDisclosure } from "@chakra-ui/react";
 import { CreatePostModal } from "../CreatePostModal/CreatePostModal";
 import { CreateChannelModal } from "../CreateChannelModal/CreateChannelModal";
 import { ChannelType } from "../../models";
-import { Button } from "antd";
+import { Button, Typography } from "antd";
 import { PlusCircleOutlined, PlusCircleFilled } from "@ant-design/icons";
 
 const SideMenu = () => {
@@ -98,7 +98,7 @@ const SideMenu = () => {
               onClick={() => onCreateChannelModalOpen()}
               className="flex items-center text-left"
             >
-              <p className="ml-2">Create a Channel</p>
+              Create a Channel
             </Button>
           )}
         </div>

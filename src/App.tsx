@@ -13,6 +13,9 @@ const App = () => {
             token: {
               colorPrimary: "#69248A",
               colorBgTextHover: "#F3E7F9",
+              colorBgTextActive: "#eac5fc",
+              controlItemBgHover: "#F3E7F9",
+              controlItemBgActive: "#eac5fc",
             },
           }}
         >
